@@ -35,3 +35,13 @@ Three sprints each delivering a working dapp with progressively increasing funct
 
 
 Need some tolegate dates for each sprint and to get team assigned to sprints tasks.
+
+NOTES from discord chats:
+It's starting to seem like there will be three maybe 4 parts to the project. 1) Off chain historical data prep, 2) off-chain data onto chain via Conjure?? 3) dapp that calls a few web3 servers and handles user interactions 4) The take action contract
+
+[Conjure](https://docs.oof.conjure.finance/) wouldn't require too much smart contract work as it appears the process for setting up your own oracle (which I'd say we want to do) is 
+1) call their formation contract with info about the data feed we want to bring on chain and some details about how we want to get paid by users of our data feed (requires gas but essentially one time), 
+2) 2) make feed endpoint settings and run a nodejs service that pulls from our data feeds api and how often (daily, would require gas every time it puts our feed onto the chain) 
+3) 3) dapp calls contract to get latest values. 
+
+I think it's interesting but it doesn't necessarily solve for the 'let's get some hands on experience writing sol contracts unless we fork it and customize to support sharing probability distributions instead of single median values like most oracles do. That's actully pretty interesting idea. hmmm
