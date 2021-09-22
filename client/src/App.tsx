@@ -5,6 +5,7 @@ import MetamaskProvider from "./providers/MetamaskProvider";
 import { CustomMessageProvider } from "./providers/MessageProvider";
 import CustomSnackBar from "./components/CustomSnackBar";
 import Home from "./containers/Home";
+import Routes from "./Routes";
 
 function App() {
     const getLibrary = async (provider: any, connector: any) => {
@@ -16,7 +17,7 @@ function App() {
             <MetamaskProvider>
                 <CustomMessageProvider>
                     <>
-                        <Home />
+                        <Routes />
                         <CustomSnackBar />
                     </>
                 </CustomMessageProvider>

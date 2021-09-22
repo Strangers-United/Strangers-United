@@ -10,11 +10,36 @@ interface IPet {
 }
 
 const Home = () => {
+    // ==================================
+    // STATE
+    // ==================================
+
     const [pets, setPets] = useState([] as IPet[]);
     const [contract, setContract] = useState<any>();
-    const { chainId, account, activate, active, error } = useWeb3React();
+    const { account, active } = useWeb3React();
     const { setMsg } = useMsg();
 
+    // ==================================
+    // INIT
+    // ==================================
+    // ==================================
+    // LISTENER
+    // ==================================
+    useEffect(() => {
+        if (active) {
+            deployContract();
+        }
+    }, [active]);
+
+    useEffect(() => {
+        if (contract) {
+            getAdopters();
+        }
+    }, [contract]);
+
+    // ==================================
+    // FUNCTIONS
+    // ==================================
     const getAdopters = async () => {
         try {
             const adopters = await contract.methods.getAdopters().call();
@@ -72,18 +97,9 @@ const Home = () => {
             });
     };
 
-    useEffect(() => {
-        if (active) {
-            deployContract();
-        }
-    }, [active]);
-
-    useEffect(() => {
-        if (contract) {
-            getAdopters();
-        }
-    }, [contract]);
-
+    // ==================================
+    // RENDER
+    // ==================================
     const renderAdopters = () => {
         if (active && pets.length > 0) {
             return pets.map((pet) => {
@@ -92,14 +108,7 @@ const Home = () => {
         }
     };
 
-    return (
-        <div>
-            {" "}
-            <div>ChainId: {chainId}</div>
-            <div>Account: {account}</div>
-            {renderAdopters()}
-        </div>
-    );
+    return <div>{renderAdopters()}</div>;
 };
 
 const Adopters = ({

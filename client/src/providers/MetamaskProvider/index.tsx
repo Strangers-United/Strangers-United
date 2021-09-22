@@ -2,6 +2,7 @@ import React, { ReactNode, FC, useEffect, useState, ReactElement } from "react";
 import { injectedConnector } from "../../utils/Connector";
 import { useWeb3React } from "@web3-react/core";
 import Web3 from "web3";
+import "./style.scss";
 
 type IMetamaskProvider = {
     children: ReactNode;
@@ -13,12 +14,45 @@ const LOCAL_TARGET_NETWORK = "0x539"; // chainId is 1337
 const LOCAL_RPC_URL = "HTTP://127.0.0.1:7545";
 
 function MetamaskProvider({ children }: IMetamaskProvider): ReactElement {
-    const { active, error, activate } = useWeb3React();
+    // ==================================
+    // STATE
+    // ==================================
+    const { chainId, account, active, error, activate } = useWeb3React();
 
     const [isConnectToTargetNetwork, setIsConnectToTargetNetwork] =
         useState(false);
     const [loaded, setLoaded] = useState(false);
 
+    let body = null;
+    let navbar = null;
+
+    // ==================================
+    // INIT
+    // ==================================
+    useEffect(() => {
+        switchToTargetNetwork();
+    }, []);
+
+    // ==================================
+    // LISTENER
+    // ==================================
+    useEffect(() => {
+        injectedConnector
+            .isAuthorized()
+            .then((isAuthorized) => {
+                setLoaded(true);
+                if (isAuthorized && !active && !error) {
+                    activate(injectedConnector);
+                }
+            })
+            .catch(() => {
+                setLoaded(false);
+            });
+    }, [activate, active, error]);
+
+    // ==================================
+    // FUNCTIONS
+    // ==================================
     const switchToTargetNetwork = async () => {
         try {
             if (window.ethereum) {
@@ -48,24 +82,6 @@ function MetamaskProvider({ children }: IMetamaskProvider): ReactElement {
         }
     };
 
-    useEffect(() => {
-        switchToTargetNetwork();
-    }, []);
-
-    useEffect(() => {
-        injectedConnector
-            .isAuthorized()
-            .then((isAuthorized) => {
-                setLoaded(true);
-                if (isAuthorized && !active && !error) {
-                    activate(injectedConnector);
-                }
-            })
-            .catch(() => {
-                setLoaded(false);
-            });
-    }, [activate, active, error]);
-
     const connect = async () => {
         try {
             if (active && !isConnectToTargetNetwork) {
@@ -78,12 +94,12 @@ function MetamaskProvider({ children }: IMetamaskProvider): ReactElement {
         }
     };
 
+    // ==================================
+    // RENDER
+    // ==================================
     if (loaded && (!active || !isConnectToTargetNetwork)) {
-        return (
+        body = (
             <>
-                <button type="button" onClick={connect}>
-                    Connect
-                </button>
                 <div>loaded: {loaded ? "true" : "false"}</div>
                 <div>active: {active ? "true" : "false"}</div>
                 <div>
@@ -92,13 +108,33 @@ function MetamaskProvider({ children }: IMetamaskProvider): ReactElement {
                 </div>
             </>
         );
+        navbar = (
+            <button type="button" onClick={connect}>
+                Connect
+            </button>
+        );
+    } else if (loaded && active && isConnectToTargetNetwork) {
+        navbar = (
+            <>
+                <div>ChainId: {chainId}</div>
+                <div>Account: {account}</div>
+            </>
+        );
+        body = children;
+    } else {
+        body = (
+            <div className="fullscreen">
+                <h1>Loading</h1>
+            </div>
+        );
     }
 
-    if (loaded && active && isConnectToTargetNetwork) {
-        return <>{children}</>;
-    }
-
-    return <div>Loading</div>;
+    return (
+        <div className="app">
+            <div className="nav-bar">{navbar}</div>
+            <div className="content">{body}</div>
+        </div>
+    );
 }
 
 export default MetamaskProvider;

@@ -1,13 +1,21 @@
+$dark-bg: #21295C;
+$dark-sec-bg: #1b3b6f;
+$dark-accent: #1c7293;
+$dark-sec-accent: #065a82;
+$dark-white: #9eb3c2;
+$error: #f44335;
+
 body {
+  font-family: 'Quicksand', sans-serif;
+  height: 100vh;
+  width: 100vw;
+  background-color: $dark-bg;
+  color: $dark-white;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.app {
+  height: 100vh;
+  width: 100vw;
 }
