@@ -1,6 +1,6 @@
 # Strangers United
-`Strangers United` is a project made for the 2021's ETH Global Hackathon.
 
+`Strangers United` is a project made for the 2021's ETH Global Hackathon.
 
 # Setup
 
@@ -65,6 +65,9 @@ npm run start
 ### Installation
 
 Install `Ganache`
+`npm install -g ganache-cli`
+Run `Ganache`
+`ganache-cli`
 
 Create a new workspace
 
