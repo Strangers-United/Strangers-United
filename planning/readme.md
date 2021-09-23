@@ -11,14 +11,14 @@ Three sprints each delivering a working dapp with progressively increasing funct
 1. User can import a portfolio via wallet connection - ( pick one integration to start eg metamask, or find library that supports many different wallet providers). Check to see if any sponsors are available with prizes.
     - Consider if User can import a portfolio via contract address instead of wallet connection.
 2. Get the current number of tokens in the portfolio. Consider user entry here if there are issues connecting to wallet.
-3. Get the current value of the portfolio via oracle - chainlink? check prizes
-4. Read PRE-MADE historical probability distributions for the top n tokens from IPFS
+3. Get the current value of the portfolio via oracle - chainlink, conjure, the graph? check prizes
+4. Read PRE-MADE historical probability distributions for the top n tokens from IPFS or Conjure custome oracle
     - Assume this is a preprocessed data pipeline that is run off chain
-    - Narrowing down the top n tokens is a manual process for now. Maybe based on market cap? or tokens Aave supports something that limits the universe for now.
+    - Narrowing down the top n tokens (5 for skateboard) is a manual process for now. Maybe based on market cap? or tokens Aave supports something that limits the universe for now.
     - The preprocessed data is will be for daily price data. Think High Low Open Close for each day. Later we can add more data like volume, or hourly or by block...
-    - The format of these price distributions AND how they are related from token to token will be capture as a covariance matrix and stored in a standardized format. 
-5. Ask user to choose a tokens from their portfolio (must be in the the top N tokens) for dapp to run interactive simulation.
-    - This would read the covariance matrix and the historical probability distribution for the chosen tokens. IPFS or Conjure oracle toolkit we use to create our own oracle smart contract.
+    - The format of these price distributions AND how they are related to each other (token to token) will be captured as a covariance matrix and stored in a standardized format that preserves the shapes of the distributions and the relationships. 
+5. Ask user to choose a tokens from their portfolio (must be from the top N (5) tokens) for dapp to run interactive simulation.
+    - This would read the covariance matrix and the historical probability distribution for the chosen tokens. IPFS or Conjure oracle toolkit we use to create our own oracle smart contract. A so called hydration.js will take the distributions and build a monte carlo simulation in browser.
 6. Ask user tp indicate a threshold for triggering a specific event. eg what' the chance portfolio decreases and hits liquidation level today.
     - Eventually we add multiple future periods into the simulation (random walk).
 7. Calculate the probability of hitting the threshold and display the result.
