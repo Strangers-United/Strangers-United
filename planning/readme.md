@@ -1,7 +1,9 @@
 # Project Planning and Organization
 
-## The main goal of this project is to: 
+## The main goal of this 'hackathon' project is to: 
 Provide a simple, easy-to-use, way of estimating if a portfolio will hit a specific value and if so trigger a specific event like increasing increasing or decreasing the number of tokens in the portfolio.
+
+Beyond that there is an opportunity to create the data oracle of uncertainty. The hackathon project will use an early prototype of a data pipeline that creates probability distributions (daily token price % change) and moves then on chain.
 
 ## The project is organized in the following way:
 Three sprints each delivering a working dapp with progressively increasing functionality. This way if the project is not fully developed, the user can still use the dapp in a more limited way.
