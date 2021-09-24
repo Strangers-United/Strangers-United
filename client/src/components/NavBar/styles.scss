@@ -1,0 +1,11 @@
+@import '../../index.scss';
+
+.nav-bar {
+    background-color: $dark-sec-bg;
+    height: $nav-bar-height;
+    width: calc(100vw - ($nav-bar-padding-x * 2));
+    position: sticky;
+    top: 0;
+    left: 0;
+    padding: 10px $nav-bar-padding-x;
+}

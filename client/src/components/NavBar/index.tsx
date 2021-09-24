@@ -1,29 +1,25 @@
-import React, { ReactNode, FC, useEffect, useState, ReactElement } from "react";
-import { injectedConnector } from "../../utils/Connector";
 import { useWeb3React } from "@web3-react/core";
-import Web3 from "web3";
-import "./style.scss";
-
-type IMetamaskProvider = {
-    children: ReactNode;
-};
+import { useEffect, useState } from "react";
+import { injectedConnector } from "../../utils/Connector";
+import { connect } from "../../reducers/metamask";
+import "./styles.scss";
+import { useAppDispatch } from "../../store";
 
 declare let window: any;
 
 const LOCAL_TARGET_NETWORK = "0x539"; // chainId is 1337
 const LOCAL_RPC_URL = "HTTP://127.0.0.1:7545";
 
-function MetamaskProvider({ children }: IMetamaskProvider): ReactElement {
+const NavBar = () => {
     // ==================================
     // STATE
     // ==================================
     const { chainId, account, active, error, activate } = useWeb3React();
-
     const [isConnectToTargetNetwork, setIsConnectToTargetNetwork] =
         useState(false);
     const [loaded, setLoaded] = useState(false);
+    const dispatch = useAppDispatch();
 
-    let body = null;
     let navbar = null;
 
     // ==================================
@@ -50,6 +46,12 @@ function MetamaskProvider({ children }: IMetamaskProvider): ReactElement {
             });
     }, [activate, active, error]);
 
+    useEffect(() => {
+        if (loaded && active && isConnectToTargetNetwork) {
+            console.log("==== trigger dispatch");
+            dispatch(connect(account as string));
+        }
+    }, [loaded, active, isConnectToTargetNetwork]);
     // ==================================
     // FUNCTIONS
     // ==================================
@@ -82,7 +84,7 @@ function MetamaskProvider({ children }: IMetamaskProvider): ReactElement {
         }
     };
 
-    const connect = async () => {
+    const connectMetamask = async () => {
         try {
             if (active && !isConnectToTargetNetwork) {
                 await switchToTargetNetwork();
@@ -97,44 +99,22 @@ function MetamaskProvider({ children }: IMetamaskProvider): ReactElement {
     // ==================================
     // RENDER
     // ==================================
-    if (loaded && (!active || !isConnectToTargetNetwork)) {
-        body = (
-            <>
-                <div>loaded: {loaded ? "true" : "false"}</div>
-                <div>active: {active ? "true" : "false"}</div>
-                <div>
-                    isConnectToTargetNetwork:
-                    {isConnectToTargetNetwork ? "true" : "false"}
-                </div>
-            </>
-        );
-        navbar = (
-            <button type="button" onClick={connect}>
-                Connect
-            </button>
-        );
-    } else if (loaded && active && isConnectToTargetNetwork) {
+    if (loaded && active && isConnectToTargetNetwork) {
         navbar = (
             <>
                 <div>ChainId: {chainId}</div>
                 <div>Account: {account}</div>
             </>
         );
-        body = children;
     } else {
-        body = (
-            <div className="fullscreen">
-                <h1>Loading</h1>
-            </div>
+        navbar = (
+            <button type="button" onClick={connectMetamask}>
+                Connect
+            </button>
         );
     }
 
-    return (
-        <div className="app">
-            <div className="nav-bar">{navbar}</div>
-            <div className="content">{body}</div>
-        </div>
-    );
-}
+    return <div className="nav-bar">{navbar}</div>;
+};
 
-export default MetamaskProvider;
+export default NavBar;
