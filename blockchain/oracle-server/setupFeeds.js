@@ -30,7 +30,7 @@ async function setupFeeds() {
     await doc.useApiKey(sheetapi);
 
     await doc.loadInfo(); // loads document properties and worksheets
-    const sheet = doc.sheetsByTitle[sheettitle];
+    const sheet = doc.sheetsByTitle["Workshop"];
 
     const rows = await sheet.getRows(); // can pass in { limit, offset }
 
