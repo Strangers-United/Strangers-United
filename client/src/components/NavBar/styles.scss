@@ -8,4 +8,28 @@
     top: 0;
     left: 0;
     padding: 10px $nav-bar-padding-x;
+    display: flex;
+    align-items: center;
+
+    .nav-bar-router {
+        display: flex;
+        align-items: center;
+        .nav-bar-router-item {
+            margin-right: 20px;
+            cursor: pointer;
+            color: $dark-white;
+            text-decoration: none;
+            &.selected {
+                color: #FFF;
+            }
+        }
+    }
+}
+
+.address-container {
+    margin-left: auto;
+    border-radius: 6px;
+    background-color: $dark-white;
+    color: #FFF;
+    padding: 10px;
 }

@@ -1,7 +1,7 @@
 import { useWeb3React } from "@web3-react/core";
 import React, { ReactElement, useEffect, useState } from "react";
+import BalanceCard from "../../components/BalanceCard";
 import useMsg from "../../hooks/CustomMessageHook";
-import getContract from "../../utils/Web3AdoptionContract";
 
 const Home = () => {
     // ==================================
@@ -22,7 +22,11 @@ const Home = () => {
     // ==================================
     // RENDER
     // ==================================
-    return <div>home</div>
+    return (
+        <div>
+            <BalanceCard />
+        </div>
+    );
 };
 
 export default Home;

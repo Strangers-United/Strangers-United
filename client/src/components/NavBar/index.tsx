@@ -1,14 +1,25 @@
 import { useWeb3React } from "@web3-react/core";
 import { useEffect, useState } from "react";
-import { injectedConnector } from "../../utils/Connector";
+import { injectedConnector } from "../../utils/connector";
 import { connect } from "../../reducers/metamask";
 import "./styles.scss";
 import { useAppDispatch } from "../../store";
+import { Button } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import { IRoute, routeArr } from "../../Routes";
+import { Link, useLocation } from "react-router-dom";
 
 declare let window: any;
 
-const LOCAL_TARGET_NETWORK = "0x539"; // chainId is 1337
-const LOCAL_RPC_URL = "HTTP://127.0.0.1:7545";
+const useStyles = makeStyles({
+    containedPrimary: {
+        backgroundColor: "#9EB3C2",
+        marginLeft: "auto",
+        "&:hover": {
+            backgroundColor: "#253361",
+        },
+    },
+});
 
 const NavBar = () => {
     // ==================================
@@ -19,8 +30,10 @@ const NavBar = () => {
         useState(false);
     const [loaded, setLoaded] = useState(false);
     const dispatch = useAppDispatch();
+    const classes = useStyles();
+    const location = useLocation();
 
-    let navbar = null;
+    let connectBtn = null;
 
     // ==================================
     // INIT
@@ -48,7 +61,6 @@ const NavBar = () => {
 
     useEffect(() => {
         if (loaded && active && isConnectToTargetNetwork) {
-            console.log("==== trigger dispatch");
             dispatch(connect(account as string));
         }
     }, [loaded, active, isConnectToTargetNetwork]);
@@ -56,24 +68,29 @@ const NavBar = () => {
     // FUNCTIONS
     // ==================================
     const switchToTargetNetwork = async () => {
+        const network =
+            process.env.NODE_ENV === "production"
+                ? process.env.REACT_APP_CHAINID
+                : process.env.REACT_APP_DEV_CHAINID;
         try {
             if (window.ethereum) {
                 await window.ethereum.enable();
                 await window.ethereum.request({
                     method: "wallet_switchEthereumChain",
-                    params: [{ chainId: LOCAL_TARGET_NETWORK }],
+                    params: [{ chainId: network }],
                 });
                 setIsConnectToTargetNetwork(true);
             }
         } catch (switchErr: any) {
+            // add network if not exist
             if (switchErr.code === 4902) {
                 try {
                     await window.ethereum.request({
                         method: "wallet_addEthereumChain",
                         params: [
                             {
-                                chainId: LOCAL_TARGET_NETWORK,
-                                rpcUrl: LOCAL_RPC_URL,
+                                chainId: network,
+                                rpcUrl: process.env.REACT_APP_GANACHE_RPC,
                             },
                         ],
                     });
@@ -100,21 +117,44 @@ const NavBar = () => {
     // RENDER
     // ==================================
     if (loaded && active && isConnectToTargetNetwork) {
-        navbar = (
-            <>
-                <div>ChainId: {chainId}</div>
-                <div>Account: {account}</div>
-            </>
-        );
+        // keep first four and last four
+        const shortenAccount =
+            account?.slice(0, 4) + "..." + account?.slice(-4);
+        connectBtn = <div className="address-container">{shortenAccount}</div>;
     } else {
-        navbar = (
-            <button type="button" onClick={connectMetamask}>
+        connectBtn = (
+            <Button
+                variant="contained"
+                color="primary"
+                className={classes.containedPrimary}
+                onClick={connectMetamask}
+            >
                 Connect
-            </button>
+            </Button>
         );
     }
 
-    return <div className="nav-bar">{navbar}</div>;
+    return (
+        <div className="nav-bar">
+            <div className="nav-bar-router">
+                {routeArr.map((route: IRoute) => {
+                    const isSelected = route.path === location.pathname;
+                    return (
+                        <Link
+                            to={route.path}
+                            key={route.path}
+                            className={`nav-bar-router-item ${
+                                isSelected ? "selected" : ""
+                            }`}
+                        >
+                            {route.name.toUpperCase()}
+                        </Link>
+                    );
+                })}
+            </div>
+            {connectBtn}
+        </div>
+    );
 };
 
 export default NavBar;

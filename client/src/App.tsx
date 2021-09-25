@@ -6,6 +6,7 @@ import CustomSnackBar from "./components/CustomSnackBar";
 import Routes from "./Routes";
 import { Provider } from "react-redux";
 import { store } from "./store";
+import { HashRouter as Router } from "react-router-dom";
 
 function App() {
     const getLibrary = async (provider: any, connector: any) => {
@@ -15,14 +16,16 @@ function App() {
     return (
         <Web3ReactProvider getLibrary={getLibrary}>
             <Provider store={store}>
-                <Layout>
-                    <CustomMessageProvider>
-                        <>
-                            <Routes />
-                            <CustomSnackBar />
-                        </>
-                    </CustomMessageProvider>
-                </Layout>
+                <Router>
+                    <Layout>
+                        <CustomMessageProvider>
+                            <>
+                                <Routes />
+                                <CustomSnackBar />
+                            </>
+                        </CustomMessageProvider>
+                    </Layout>
+                </Router>
             </Provider>
         </Web3ReactProvider>
     );
