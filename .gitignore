@@ -7,7 +7,7 @@
 ### User defined ###
 .env
 .OOFenv
-
+/node_modules
 
 ### Python ###
 # Byte-compiled / optimized / DLL files
