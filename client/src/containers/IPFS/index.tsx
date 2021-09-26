@@ -1,9 +1,12 @@
 import { create as ipfsCreate } from "ipfs-http-client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Ipfs = () => {
     const [text, setText] = useState("");
-    const [url, setUrl] = useState("");
+    const [url, setUrl] = useState(
+        "https://ipfs.io/ipfs/bafybeier5lunkoyefty7deas73avsn53j2moeuhzxflzqutasxyuye3uwa"
+    );
+    const [data, setData] = useState("");
 
     const submit = async () => {
         try {
@@ -19,16 +22,36 @@ const Ipfs = () => {
         }
     };
 
+    const getIPFSData = async () => {
+        try {
+            const rawData = await fetch(url);
+            const _data = await rawData.text();
+            console.log(_data);
+            setData(_data);
+        } catch (err) {
+            console.log("==== err", err);
+        }
+    };
+
+    useEffect(() => {
+        if (url) {
+            getIPFSData();
+        }
+    }, [url]);
+
     return (
         <div>
             <div>Your text {text}</div>
-            <div>url : {url}</div>
+            <div>
+                <a href={url}>url : {url}</a>
+            </div>
             <input
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setText(e.target.value)
                 }
             />
             <button onClick={submit}>submit</button>
+            <div>From IPFS : {data}</div>
         </div>
     );
 };
