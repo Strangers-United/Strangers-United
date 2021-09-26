@@ -1,15 +1,15 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.7.6;
+pragma solidity >=0.8.6;
 pragma abicoder v2;
 
-import { Address } from "@openzeppelin/contracts/utils/Address.sol";
-import "@openzeppelin/contracts/math/SafeMath.sol";
+import "@openzeppelin/contracts/utils/Address.sol";
+// import "@openzeppelin/contracts/math/SafeMath.sol";
 import "./interfaces/IConjureFactory.sol";
 import "./interfaces/IConjureRouter.sol";
 
 contract OpenOracleFramework {
     // using Openzeppelin contracts for SafeMath and Address
-    using SafeMath for uint256;
+    // using SafeMath for uint256;
     using Address for address;
 
     // the address of the collateral contract factory
