@@ -1,7 +1,7 @@
 import React from "react";
 import { Switch, Route } from "react-router-dom";
-import About from "./containers/About";
 import Home from "./containers/Home";
+import Ipfs from "./containers/IPFS";
 
 export interface IRoute {
     path: string;
@@ -12,7 +12,7 @@ export interface IRoute {
 
 export const routeArr = [
     { path: "/", exact: true, component: Home, name: "Dashboard" },
-    { path: "/about", exact: true, component: About, name: "About" },
+    { path: "/ipfs", exact: true, component: Ipfs, name: "Ipfs" },
 ] as IRoute[];
 
 const Routes = () => {
