@@ -28,7 +28,7 @@ contract OOFFactory {
             "No zero address for conjureRouter"
         );
 
-        factoryOwner = msg.sender;
+        factoryOwner = payable(msg.sender);
         oofImplementation = _oofImplementation;
         conjureRouter = _conjureRouter;
 

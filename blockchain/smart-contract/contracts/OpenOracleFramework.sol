@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.8.6;
+pragma solidity >=0.8.5;
 pragma abicoder v2;
 
 import "@openzeppelin/contracts/utils/Address.sol";
@@ -721,13 +721,13 @@ contract OpenOracleFramework {
             require(durations[i] >= 3600, "Minimum subscription is 1h");
 
             if (subscribedTo[buyer][feedIDs[i]] <= block.timestamp) {
-                subscribedTo[buyer][feedIDs[i]] = block.timestamp.add(
-                    durations[i]
-                );
+                subscribedTo[buyer][feedIDs[i]] =
+                    block.timestamp +
+                    durations[i];
             } else {
-                subscribedTo[buyer][feedIDs[i]] = subscribedTo[buyer][
-                    feedIDs[i]
-                ].add(durations[i]);
+                subscribedTo[buyer][feedIDs[i]] =
+                    subscribedTo[buyer][feedIDs[i]] +
+                    durations[i];
             }
 
             total += (feedList[feedIDs[i]].feedCost * durations[i]) / 3600;
@@ -755,9 +755,9 @@ contract OpenOracleFramework {
         );
 
         if (hasPass[buyer] <= block.timestamp) {
-            hasPass[buyer] = block.timestamp.add(duration);
+            hasPass[buyer] = block.timestamp + duration;
         } else {
-            hasPass[buyer] = hasPass[buyer].add(duration);
+            hasPass[buyer] = hasPass[buyer] + duration;
         }
 
         address payable conjureRouter = IConjureFactory(factoryContract)
@@ -778,7 +778,7 @@ contract OpenOracleFramework {
                 feedList[feedIds[i]].revenueMode == 0,
                 "Subscription mode turned on"
             );
-            feedSupport[feedIds[i]] = feedSupport[feedIds[i]].add(values[i]);
+            feedSupport[feedIds[i]] = feedSupport[feedIds[i]] + values[i];
             total += values[i];
 
             emit feedSupported(feedIds[i], values[i]);
