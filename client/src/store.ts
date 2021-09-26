@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import metamaskReducer from "./reducers/metamask";
+import tokenBalanceReducer from "./reducers/tokenBalance";
 
 export const store = configureStore({
     reducer: {
         metamask: metamaskReducer,
+        tokenList: tokenBalanceReducer,
     },
 });
 
