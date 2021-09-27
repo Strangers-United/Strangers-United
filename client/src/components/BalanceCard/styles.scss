@@ -1,0 +1,33 @@
+@import '../../index.scss';
+
+.token-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.8em;
+    .symbol {
+        font-weight: 700;
+    }
+    .balance {
+        font-weight: 700;
+    }
+}
+
+.token-row-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1em;
+    .symbol {
+        font-weight: 100;
+        color: $dark-white;
+    }
+    .balance {
+        font-weight: 100;
+        color: $dark-white;
+    }
+}
+
+.refresh-btn.MuiIconButton-root {
+    color: #FFF;
+}

@@ -1,21 +1,36 @@
 import React from "react";
-import {
-HashRouter as Router,
-  Switch,
-  Route,
-} from "react-router-dom";
-import About from "./containers/About";
+import { Switch, Route } from "react-router-dom";
 import Home from "./containers/Home";
+import Ipfs from "./containers/IPFS";
+import Chance from "./containers/Chance";
+
+export interface IRoute {
+    path: string;
+    exact: boolean;
+    component: React.ComponentType;
+    name: string;
+}
+
+export const routeArr = [
+    { path: "/", exact: true, component: Home, name: "Dashboard" },
+    { path: "/ipfs", exact: true, component: Ipfs, name: "Ipfs" },
+    { path: "/chance", exact: true, component: Chance, name: "Chance of XYZ" },
+
+] as IRoute[];
 
 const Routes = () => {
     return (
-        <Router>
-                <Switch>
-                    <Route path="/" exact component={Home} />
-                    <Route path="/about" exact component={About} />
-                </Switch>
-        </Router>
-    )
-}
+        <Switch>
+            {routeArr.map((route) => (
+                <Route
+                    key={route.path}
+                    path={route.path}
+                    exact={route.exact}
+                    component={route.component}
+                />
+            ))}
+        </Switch>
+    );
+};
 
-export default Routes
+export default Routes;

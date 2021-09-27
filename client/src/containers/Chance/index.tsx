@@ -1,9 +1,10 @@
 import { useWeb3React } from "@web3-react/core";
 import React, { ReactElement, useEffect, useState } from "react";
-import BalanceCard from "../../components/BalanceCard";
+import BalanceCardChance from "../../components/BalanceCardChance";
+import Chart from "../../components/Chart";
 import useMsg from "../../hooks/CustomMessageHook";
 
-const Home = () => {
+const Chance = () => {
     // ==================================
     // STATE
     // ==================================
@@ -24,9 +25,10 @@ const Home = () => {
     // ==================================
     return (
         <div>
-            <BalanceCard />
+            <BalanceCardChance />
+            <Chart />
         </div>
     );
 };
 
-export default Home;
+export default Chance;

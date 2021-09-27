@@ -1,6 +1,6 @@
-import { Snackbar } from "@material-ui/core";
+import { Snackbar } from "@mui/material";
 import useMsg from "../../hooks/CustomMessageHook";
-import Alert from "@material-ui/lab/Alert";
+import { Alert } from "@mui/material";
 
 const CustomSnackBar = () => {
     const { msg, setMsg } = useMsg();

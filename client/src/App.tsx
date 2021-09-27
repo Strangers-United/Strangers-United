@@ -1,11 +1,12 @@
-import React from "react";
 import { Web3ReactProvider } from "@web3-react/core";
 import Web3 from "web3";
-import MetamaskProvider from "./providers/MetamaskProvider";
+import Layout from "./components/Layout";
 import { CustomMessageProvider } from "./providers/MessageProvider";
 import CustomSnackBar from "./components/CustomSnackBar";
-import Home from "./containers/Home";
 import Routes from "./Routes";
+import { Provider } from "react-redux";
+import { store } from "./store";
+import { HashRouter as Router } from "react-router-dom";
 
 function App() {
     const getLibrary = async (provider: any, connector: any) => {
@@ -14,14 +15,18 @@ function App() {
 
     return (
         <Web3ReactProvider getLibrary={getLibrary}>
-            <MetamaskProvider>
-                <CustomMessageProvider>
-                    <>
-                        <Routes />
-                        <CustomSnackBar />
-                    </>
-                </CustomMessageProvider>
-            </MetamaskProvider>
+            <Provider store={store}>
+                <Router>
+                    <Layout>
+                        <CustomMessageProvider>
+                            <>
+                                <Routes />
+                                <CustomSnackBar />
+                            </>
+                        </CustomMessageProvider>
+                    </Layout>
+                </Router>
+            </Provider>
         </Web3ReactProvider>
     );
 }
