@@ -6,6 +6,16 @@
 
 ## Smart contract
 
+#### Folder structure
+
+#### **blockchain** -- > `oracle (nodejs server for oracle (OOFNode))` & `smart-contract (whole contracts belong to the project)`
+
+#### Smart-Contract directory requirements:
+
+```
+1- npm install @openzeppelin/contracts
+```
+
 ### Compilation
 
 ```
