@@ -150,23 +150,6 @@ const Chart = () => {
         ],
     };
 
-    const specDist: VisualizationSpec = {
-        "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-        "title": "Token Price % Change Distribution",
-        "data": {
-            "name": "table"
-        },
-        "mark": "bar",
-        "encoding": {
-            "x": {
-                "bin": true,
-                "field": "b"
-            },
-            "y": {
-                "aggregate": "count"
-            }
-        }
-    }
 
     // ==================================
     // RENDER
@@ -174,7 +157,7 @@ const Chart = () => {
 
     return (
         <>
-            <h3>Daily Token Price % Change - Historical</h3>
+            <h3>Example for stream current price of token into chart</h3>
             <div>
                 <VegaLite
                     spec={spec}
