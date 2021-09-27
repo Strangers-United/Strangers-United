@@ -4,22 +4,22 @@ import { injectedConnector } from "../../utils/connector";
 import { connect } from "../../reducers/metamask";
 import "./styles.scss";
 import { useAppDispatch } from "../../store";
-import { Button } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { Button } from "@mui/material";
+// import { makeStyles } from "@material-ui/core/styles";
 import { IRoute, routeArr } from "../../Routes";
 import { Link, useLocation } from "react-router-dom";
 
 declare let window: any;
 
-const useStyles = makeStyles({
-    containedPrimary: {
-        backgroundColor: "#9EB3C2",
-        marginLeft: "auto",
-        "&:hover": {
-            backgroundColor: "#253361",
-        },
-    },
-});
+// const useStyles = makeStyles({
+//     containedPrimary: {
+//         backgroundColor: "#9EB3C2",
+//         marginLeft: "auto",
+//         "&:hover": {
+//             backgroundColor: "#253361",
+//         },
+//     },
+// });
 
 const NavBar = () => {
     // ==================================
@@ -30,7 +30,7 @@ const NavBar = () => {
         useState(false);
     const [loaded, setLoaded] = useState(false);
     const dispatch = useAppDispatch();
-    const classes = useStyles();
+    // const classes = useStyles();
     const location = useLocation();
 
     let connectBtn = null;
@@ -126,7 +126,8 @@ const NavBar = () => {
             <Button
                 variant="contained"
                 color="primary"
-                className={classes.containedPrimary}
+                className="connect-btn"
+                // className={classes.containedPrimary}
                 onClick={connectMetamask}
             >
                 Connect

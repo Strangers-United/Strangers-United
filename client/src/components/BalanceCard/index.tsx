@@ -1,18 +1,15 @@
-import { useWeb3React } from "@web3-react/core";
+import { IconButton } from "@mui/material";
 import { useEffect } from "react";
-import { abi, rinkebyTokenList } from "../../utils/token";
-import { web3Instance } from "../../utils/web3Context";
-import { AbiItem } from "web3-utils";
-import CustomizedCard from "../CustomizedCard";
 import { fetchTokenBalance, TokenState } from "../../reducers/tokenBalance";
 import { useAppDispatch, useAppSelector } from "../../store";
+import CustomizedCard from "../CustomizedCard";
 import "./styles.scss";
+import RefreshIcon from "@mui/icons-material/Refresh";
 
 const BalanceCard = () => {
     // ==================================
     // STATE
     // ==================================
-    const { account, active } = useWeb3React();
     const dispatch = useAppDispatch();
     const tokenList = useAppSelector((state) => state.tokenList.tokenList);
 
@@ -40,7 +37,14 @@ const BalanceCard = () => {
     // ==================================
 
     return (
-        <CustomizedCard title="Balance">
+        <CustomizedCard
+            title="Balance"
+            actions={
+                <IconButton onClick={getTokenBalance}>
+                    <RefreshIcon />
+                </IconButton>
+            }
+        >
             <TokenRow isHeader />
             {tokenList.map((token: TokenState) => {
                 return (
