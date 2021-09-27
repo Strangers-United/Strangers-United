@@ -1,9 +1,17 @@
-.customized-card {
+.customized-card.MuiPaper-root {
+    background-color: #253361;
+    color: #FFF;
+    padding: 1em;
+
     .header {
         display: flex;
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
         margin-bottom: 1em;
+        .title {
+            color: #9EB3C2;
+            font-weight: 700;
+        }
     }
 }
