@@ -72,10 +72,41 @@ const spec = {
   ]
 };
 
+const spec2 = {
+  mark: {type: "area", color: "#0084FF", interpolate: "monotone"},
+  encoding: {
+    x: {
+      field: "date",
+      type: "temporal",
+      timeUnit: "yearmonthdate",
+      axis: {title: "Date"}
+    },
+    y: {
+      field: "active_users",
+      type: "quantitative",
+      axis: {title: "Active Users"}
+    },
+    opacity: {"value": 1}
+  },
+  width: 400,
+  height: 300,
+  data: {
+    values: [
+      {"active_users": 0, "date": "2019-10-01"},
+      {"active_users": 2, "date": "2019-10-02"},
+      {"active_users": 0, "date": "2019-10-03"},
+      {"active_users": 1, "date": "2019-10-04"},
+      {"active_users": 0, "date": "2019-10-05"},
+      {"active_users": 0, "date": "2019-10-06"},
+      {"active_users": 1, "date": "2019-10-07"}
+    ]
+  },
+  config: {}
+}
     
   
 const Histogram = createClassFromSpec({
-  spec
+  spec2
 });
 
 export default Histogram;
