@@ -49,6 +49,8 @@ const BalanceCardChance = () => {
                         symbol={token.symbol}
                         balance={token.balance}
                         currentUsd={token.balance}
+                        liquidationPrice={token.balance}
+                        chanceofHitting={token.balance}
                         distribution={token.balance}
                         isHeader={false}
                     />
@@ -62,12 +64,16 @@ const TokenRow = ({
     symbol,
     balance,
     currentUsd,
+    liquidationPrice,
+    chanceofHitting,
     distribution,
     isHeader,
 }: {
     symbol?: string;
     balance?: number;
     currentUsd?: number;
+    liquidationPrice?: number;
+    chanceofHitting?: number;
     distribution?: number;
     isHeader: boolean;
 }) => {
@@ -77,6 +83,8 @@ const TokenRow = ({
                 <span className="symbol">Symbol</span>
                 <span className="balance">Balance</span>
                 <span className="current-usd">Value in USD</span>
+                <span className="liquidation-price">Liquidation Price</span>
+                <span className="chance-of-hitting">Chance of hitting</span>
                 <span className="distribution">Distribution</span>
             </div>
         );
@@ -86,6 +94,8 @@ const TokenRow = ({
             <span className="symbol">{symbol}</span>
             <span className="balance">{balance}</span>
             <span className="current-usd">{currentUsd}</span>
+            <span className="liquidation-price">{liquidationPrice}</span>
+            <span className="chance-of-hitting">{chanceofHitting}</span>
             <span className="distribution">{balance}</span>
         </div>
     );
