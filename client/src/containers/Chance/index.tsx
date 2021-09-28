@@ -43,7 +43,7 @@ const Chance = () => {
     return (
         <div>
             <BalanceCardChance />
-            <Chart />
+            {/* <Chart /> */}
             <Histogram data={data} signalListeners={signalListeners} />
 
         </div>
