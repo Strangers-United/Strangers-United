@@ -10,15 +10,24 @@ export interface TokenState {
     balance: number;
 }
 
+const ether = {
+    address: "eth",
+    symbol: "ETH",
+    name: "Ether",
+    balance: 0,
+} as TokenState;
+
 const initialState = {
-    tokenList: rinkebyTokenList.map((token: IToken) => {
-        return {
-            address: token.address,
-            symbol: "",
-            name: "",
-            balance: 0,
-        };
-    }),
+    tokenList: rinkebyTokenList
+        .map((token: IToken) => {
+            return {
+                address: token.address,
+                symbol: "",
+                name: "",
+                balance: 0,
+            };
+        })
+        .concat(ether),
 };
 
 export const fetchTokenBalance = createAsyncThunk(
@@ -30,7 +39,11 @@ export const fetchTokenBalance = createAsyncThunk(
                 ? tokenList
                 : rinkebyTokenList;
 
-        return await Promise.all(
+        const weiToken = await web3Instance.eth.getBalance(
+            tempAccount as string
+        );
+
+        const allTokens = await Promise.all(
             list.map(async (t: IToken) => {
                 const contract = new web3Instance.eth.Contract(
                     abi as AbiItem[],
@@ -51,6 +64,16 @@ export const fetchTokenBalance = createAsyncThunk(
                 } as TokenState;
             })
         );
+
+        return [
+            {
+                ...ether,
+                balance: parseFloat(
+                    web3Instance.utils.fromWei(weiToken, "ether")
+                ),
+            },
+            ...allTokens,
+        ];
     }
 );
 
@@ -62,7 +85,14 @@ const tokenBalanceSlice = createSlice({
         builder.addCase(fetchTokenBalance.fulfilled, (state, action) => {
             action.payload.forEach((data: TokenState) => {
                 state.tokenList = state.tokenList.map((e) => {
-                    if (e.address === data.address) {
+                    if (data.address === "eth") {
+                        return {
+                            ...e,
+                            name: data.name,
+                            symbol: data.symbol,
+                            balance: data.balance,
+                        };
+                    } else if (e.address === data.address) {
                         return {
                             ...e,
                             name: data.name,
