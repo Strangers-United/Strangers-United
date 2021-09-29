@@ -8,6 +8,7 @@ import { fetchTokenBalance, TokenState } from "../../reducers/tokenBalance";
 import { useAppDispatch, useAppSelector } from "../../store";
 import "./styles.scss";
 import { Sparklines, SparklinesLine, SparklinesCurve, SparklinesBars } from 'react-sparklines-typescript';
+import { fetchSlurpLib } from "../../reducers/slurpHydrate";
 
 let tempData1 = [0.14427115522960857, 0.20852389823055525, 0.27277664123149864, 0.3714337877611313, 0.5007326814381072, 0.6769688242382322, 0.9176844102783538, 1.2434741490896293, 1.765986562746358, 2.3893560330371866, 3.1350435529213763, 4.196920999861439, 5.680468820203986, 7.769459548373542, 10.634341836627641, 14.747363471118522, 21.00279216076072, 31.407051477510763, 52.49013131649001, 136.05693144964044, 37.96193251972649, 8.53530490459275, 2.694060532008129, 1.051776406209876, 0.41271337029240796];
 let tempData2 = [0.055786566, 0.079714826, 0.103643087, 0.138945141, 0.1847507, 0.247152175, 0.329256435, 0.440320053, 0.602577814, 0.824771845, 1.046965876, 1.396759337, 1.829541683, 2.399617712, 3.138166186, 4.127080895, 5.449820259, 7.242825746, 9.808487982, 13.76753058, 21.00273537, 42.53812639, 12.01323586, 1.328354726, 0.272297565];
@@ -19,12 +20,16 @@ const BalanceCardChance = () => {
     const { account, active } = useWeb3React();
     const dispatch = useAppDispatch();
     const tokenList = useAppSelector((state) => state.tokenList.tokenList);
+    // console.log(tokenList);
+    const sipList = useAppSelector((state) => state.slurpList.slurpList);
+    console.log('get stuff here: ', sipList);
 
     // ==================================
     // INIT
     // ==================================
     useEffect(() => {
         getTokenBalance();
+        getTokenSipMathLib();
     }, []);
     // ==================================
     // LISTENER
@@ -35,6 +40,13 @@ const BalanceCardChance = () => {
     const getTokenBalance = async () => {
         try {
             dispatch(fetchTokenBalance());
+        } catch (err) {
+            console.log(err);
+        }
+    };
+    const getTokenSipMathLib = async () => {
+        try {
+            dispatch(fetchSlurpLib());
         } catch (err) {
             console.log(err);
         }
