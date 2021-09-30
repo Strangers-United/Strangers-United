@@ -20,7 +20,7 @@ const BalanceCardChance = () => {
     const { account, active } = useWeb3React();
     const dispatch = useAppDispatch();
     const tokenList = useAppSelector((state) => state.tokenList.tokenList);
-    // console.log(tokenList);
+    // console.log('only simulate these tokens: ', tokenList[0].symbol);
     const sipList = useAppSelector((state) => state.slurpList.slurpList);
     console.log('get stuff here: ', sipList);
 
