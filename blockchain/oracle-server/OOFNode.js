@@ -29,6 +29,7 @@ let feedInventory = [];
 // storage for last update timestamp
 let lastUpdate = {};
 
+const updateInterval = 60; // update interval in seconds
 // start building inventory
 async function startNode() {
     // Initialize the sheet
@@ -75,7 +76,7 @@ async function startNode() {
 
     // process first time then every hour
     await processFeeds(feedInventory)
-    setInterval(processFeeds, 3600 * 1000, feedInventory);
+    setInterval(processFeeds, updateInterval * 1000, feedInventory);
 }
 
 
@@ -157,9 +158,9 @@ async function processFeeds(feedInput) {
         console.log("submitted feed ids: " + feedIdArray + "with values: " + feedValueArray + " at " + Date.now())
         console.log("Transaction hash: " + tx.hash)
 
-        // check if still pending after 5 minutes
+        // check if still pending after 5 minutes (original) --> 30 seconds
         while (true) {
-            await wait(5 * 60 * 1000);
+            await wait(30 * 1000);
             let txi = await provider.getTransaction(tx.hash)
 
             console.log("Checking tx after 5 minutes at " + Date.now())
