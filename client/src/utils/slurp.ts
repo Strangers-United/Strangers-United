@@ -1,19 +1,9 @@
-export const slurpList = [
+export const slurpList = [ // This is temp until we have a real libraries we fetch from ipfs via some sort of search
     {
-        location: "ipfs hash here?",
-        sips: ["DAI", "ETH"],
-        sipMatrices: [0.5, 0.5],
-    },
-    {
-        location: "ipfs hash here?",
-        sips: ["FILE", "ETH"],
-        sipMatrices: [0.5, 0.5],
-    },
-    {
-        location: "ipfs hash here?",
-        sips: ["COMP", "ETH"],
-        sipMatrices: [0.5, 0.5],
-    },
+        location: "https://ipfs.io/ipfs/QmTn16U9YtbMeGkYWtRFZ5XrNA7tiKQYyRSgX4Es3TWouB",
+        sips: [],
+        sipMatrices: [],
+    }
 ] as ISlurp[];
 
 export interface ISlurp {

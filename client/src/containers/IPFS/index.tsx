@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 const Ipfs = () => {
     const [text, setText] = useState("");
     const [url, setUrl] = useState(
-        "https://ipfs.io/ipfs/bafybeier5lunkoyefty7deas73avsn53j2moeuhzxflzqutasxyuye3uwa"
+        "https://ipfs.io/ipfs/QmTn16U9YtbMeGkYWtRFZ5XrNA7tiKQYyRSgX4Es3TWouB"
     );
     const [data, setData] = useState("");
 
