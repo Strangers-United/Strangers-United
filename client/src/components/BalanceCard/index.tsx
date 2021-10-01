@@ -27,6 +27,7 @@ const BalanceCard = () => {
     // ==================================
     const getTokenBalance = async () => {
         try {
+            console.log("==== getTokenBalance");
             dispatch(fetchTokenBalance());
         } catch (err) {
             console.log(err);
