@@ -6,32 +6,71 @@ import TokenBalanceCheckerContract from "../utils/tokenBalanceChecker";
 
 export interface TokenState {
     address: string;
-    symbol: string;
     name: string;
+    symbol: string;
     balance: number;
+    currentPrice: number;
+    usdValue: number;
+    threshold: number;
+    chance: number;
 }
 
-const ether = {
-    address: "eth",
-    symbol: "ETH",
-    name: "Ether",
-    balance: 0,
-} as TokenState;
+export interface ITokenBalanceHeader {
+    key: keyof TokenState;
+    label: string;
+    editable: boolean;
+}
+
+export interface ITokenBalanceState {
+    headers: ITokenBalanceHeader[];
+    state: FETCH_STATE;
+    tokenList: TokenState[];
+}
+
+export interface IUpdateThresholdPayload {
+    symbol: string;
+    value: number;
+}
+
+type FETCH_STATE = "fetching" | "fetched" | "failed";
 
 const ETH_ADDRESS = "0x0000000000000000000000000000000000000000";
 
+const ether = {
+    address: ETH_ADDRESS,
+    symbol: "ETH",
+    name: "Ether",
+    balance: 0,
+    currentPrice: 0,
+    usdValue: 0,
+    threshold: 0,
+    chance: 0,
+} as TokenState;
+
 const initialState = {
+    headers: [
+        { key: "balance", label: "Balance", editable: false },
+        { key: "currentPrice", label: "Price", editable: false },
+        { key: "usdValue", label: "Value (USD)", editable: false },
+        { key: "threshold", label: "Threshold", editable: true },
+        { key: "chance", label: "Chance of Hit", editable: false },
+    ],
+    state: "fetching" as FETCH_STATE,
     tokenList: rinkebyTokenList
         .map((token: IToken) => {
             return {
                 address: token.address,
-                symbol: "",
                 name: "",
+                symbol: "",
                 balance: 0,
+                currentPrice: 0,
+                usdValue: 0,
+                threshold: 0,
+                chance: 0,
             };
         })
         .concat(ether),
-};
+} as ITokenBalanceState;
 
 export const fetchTokenBalance = createAsyncThunk(
     "tokenBalance/fetch",
@@ -58,6 +97,10 @@ export const fetchTokenBalance = createAsyncThunk(
                     balance: parseFloat(
                         web3Instance.utils.fromWei(result[index], "ether")
                     ),
+                    currentPrice: 0,
+                    usdValue: 0,
+                    threshold: 0,
+                    chance: 0,
                 } as TokenState;
             }) as TokenState[];
         } catch (err) {
@@ -70,11 +113,31 @@ export const fetchTokenBalance = createAsyncThunk(
 const tokenBalanceSlice = createSlice({
     name: "tokenList",
     initialState,
-    reducers: {},
+    reducers: {
+        updateThreshold(
+            state: ITokenBalanceState,
+            action: PayloadAction<IUpdateThresholdPayload>
+        ) {
+            state.tokenList = state.tokenList.map((token) => {
+                if (token.symbol === action.payload.symbol) {
+                    token.threshold = action.payload.value;
+                }
+                return token;
+            });
+        },
+    },
     extraReducers: (builder) => {
-        builder.addCase(fetchTokenBalance.fulfilled, (state, action) => {
-            state.tokenList = action.payload;
-        });
+        builder
+            .addCase(fetchTokenBalance.fulfilled, (state, action) => {
+                state.state = "fetched";
+                state.tokenList = action.payload;
+            })
+            .addCase(fetchTokenBalance.pending, (state, action) => {
+                state.state = "fetching";
+            })
+            .addCase(fetchTokenBalance.rejected, (state, action) => {
+                state.state = "failed";
+            });
     },
 });
 

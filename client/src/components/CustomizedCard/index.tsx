@@ -6,11 +6,12 @@ interface ICustomizedCard {
     title: string;
     children: ReactElement | ReactNode;
     actions?: ReactNode;
+    className?: string;
 }
 
 const CustomizedCard = (props: ICustomizedCard) => {
     return (
-        <Paper className="customized-card">
+        <Paper className={`customized-card ${props.className}`}>
             <div className="header">
                 <Typography variant="h6" className="title">
                     {props.title}
