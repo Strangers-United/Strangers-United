@@ -29,7 +29,7 @@ let feedInventory = [];
 // storage for last update timestamp
 let lastUpdate = {};
 
-const updateInterval = 60; // update interval in seconds
+const updateInterval = 10 * 60; // update interval in seconds
 // start building inventory
 async function startNode() {
     // Initialize the sheet
@@ -38,7 +38,7 @@ async function startNode() {
 
     await doc.loadInfo(); // loads document properties and worksheets
     // const sheet = doc.sheetsByTitle[sheettitle];
-    const sheet = doc.sheetsByTitle["Workshop"];
+    const sheet = doc.sheetsByTitle[sheettitle];
     // const sheet = doc.sheetsByTitle["Rinkeby"];
 
     const rows = await sheet.getRows(); // can pass in { limit, offset }
@@ -160,7 +160,7 @@ async function processFeeds(feedInput) {
 
         // check if still pending after 5 minutes (original) --> 30 seconds
         while (true) {
-            await wait(30 * 1000);
+            await wait(5 * 60 * 1000);
             let txi = await provider.getTransaction(tx.hash)
 
             console.log("Checking tx after 5 minutes at " + Date.now())
