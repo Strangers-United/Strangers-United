@@ -1,87 +1,79 @@
-import React, {
-    useEffect,
-    useRef,
-    useState
-} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import CustomizedCard from "../CustomizedCard";
-import {
-    useAppDispatch,
-    useAppSelector
-} from "../../store";
+import { useAppDispatch, useAppSelector } from "../../store";
 import "./styles.scss";
-import {
-    VegaLite,
-    View
-} from 'react-vega';
-import {
-    VisualizationSpec
-} from 'vega-embed';
+import { VegaLite, View } from 'react-vega';
+import embed from 'vega-embed';
+import { VisualizationSpec } from 'vega-embed';
 import * as vega from 'vega';
+import { fetchSlurpLib, SlurpState } from "../../reducers/slurpHydrate";
 
-const sineDataSupplier = (x: number) => {
-    const y = 100 / 2 + 40 * Math.sin(x / 2);
-    return {
-        x: x,
-        value: Math.floor(y)
-    };
-};
 
-const currentPriceDataSupplier = (x: number) => {
-    // TODO get caller? pass as prop? or do here?
+const currentPriceDataSupplier = (slurp: any) => {
+    console.log("currentPriceDataSupplier",); // todo
+    console.log('this is the slurp ', slurp);
+    let vegaData: any[] = [];
+    slurp[0].sipMatrices.forEach((element: any, index1: any) => {
+        console.log('what is in sipLisnIn ', element, index1);
+        element.forEach((trial: any, index2: any) => {
+            console.log('what is here ', index2);
+            vegaData[index2] = {
+                "a": index2,
+                "b": trial
+            };
+        });
+        console.log('what is here ', vegaData);
+        return {
+            vegaData
+            // value: sipListIn[0].sipMatrices[0] 
+        };
+    });
 }
+
 
 const Chart = () => {
     // ==================================
     // STATE
     // ==================================
     const [view, setView] = useState<View>();
-    const z = -20;
-    const x = 0;
 
-    const ref = useRef({
-        x,
-        z,
-    });
+
+    const sipList = useAppSelector((state) => state.slurpList.slurpList);
+    // const currentPrice = useAppSelector((state) => state.currentPrice.tokenPrice); // GET CURRENT PRICE??
+
+    console.log("siplist yadda yadda ", sipList); // Good to see this works
+
     // ==================================
     // INIT
     // ==================================
     useEffect(() => {
-        // GET request using fetch inside useEffect React hook
-        fetch('https://ipfs.io/ipfs/QmTn16U9YtbMeGkYWtRFZ5XrNA7tiKQYyRSgX4Es3TWouB')
-            .then(response => response.json())
-            .then(data => console.log(data.sips));
-
         // empty dependency array means this effect will only run once (like componentDidMount in classes)
-        function currentPriceDataSupplier(x: number) {
-
-        }
-
-
         function updateGraph() {
-            const data = sineDataSupplier(ref.current.x);
-            ref.current.x++;
-            ref.current.z++;
+            const data: any = currentPriceDataSupplier(sipList);
 
-            const cs = vega
-                .changeset()
-                .insert(data)
-                .remove((t: { x: number; value: number }) => {
-                    return t.x < ref.current.z;
-                });
-            if (!view) {
-                console.error('No data here!');
-                return null
-            }
-            view.change('data', cs).run();
-        }
+            console.log("data for charting ",);
 
-        if (view) {
-            updateGraph();
-            const windowInterval: number = window.setInterval(updateGraph, 1111);
-            return () => clearInterval(windowInterval);
-            // ?? https://stackoverflow.com/questions/51376589/typescript-what-type-is-f-e-setinterval
+            /*             if (!data) {
+                            console.error('No data here!');
+                            return null
+                        } */
+            // a = position of token in array b= array or simulated trials
+            console.log('this is BBBBB ', data)
+
+
         }
-    }, [view]);
+        // const result = await embed('#vis', spec);
+
+        //console.log(result.view);
+
+        updateGraph();
+        //view.insert('data', cs).run();
+
+        const windowInterval: number = window.setInterval(updateGraph, 11111);
+        return () => clearInterval(windowInterval);
+        // ?? https://stackoverflow.com/questions/51376589/typescript-what-type-is-f-e-setinterval
+
+    }, [sipList]);
     // ==================================
     // LISTENER
     // ==================================
@@ -149,7 +141,23 @@ const Chart = () => {
             },
         ],
     };
-
+    const spec1: VisualizationSpec = {
+        "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+        "title": "Token Price % Change Distribution",
+        "data": {
+            "name": "data"
+        },
+        "mark": "bar",
+        "encoding": {
+            "x": {
+                "bin": true,
+                "field": "b"
+            },
+            "y": {
+                "aggregate": "count"
+            }
+        }
+    }
 
     // ==================================
     // RENDER
@@ -160,7 +168,7 @@ const Chart = () => {
             <h3>Example for stream current price of token into chart</h3>
             <div>
                 <VegaLite
-                    spec={spec}
+                    spec={spec1}
                     actions={false}
                     renderer={'svg'}
                     onNewView={(view) => setView(view)}
