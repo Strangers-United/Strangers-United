@@ -5,16 +5,16 @@ import { ISlurp, slurpList } from "../utils/slurp";
 export interface SlurpState {
     location: string;
     sips: string[];
-    sipMatrices: number[];
+    sipMatrices: number[][];
 }
 
 const initialState = {
     slurpList: slurpList
-        .map((token: ISlurp) => {
+        .map((slurp: ISlurp) => {
             return {
-                location: "init state ipfs address would go here",
+                location: "init state", //init state ipfs
                 sips: ["token1 init", "sip 2 init"],
-                sipMatrices: [.22, .33, .44],
+                sipMatrices: [[.22, .33, .44], [.55, .66, .77]],
             };
         })
 };
@@ -45,7 +45,7 @@ export const fetchSlurpLib = createAsyncThunk(
         let sipTrials: number[] = [];
         let sipNames: string[] = [];
         slurpIpfsLib.sips.forEach(async function (sip: any, i: number) {
-            sipTrials[i] = await hydrateLibrary(slurpIpfsLib, slurpIpfsLib.sips[i].name, 3);
+            sipTrials[i] = await hydrateLibrary(slurpIpfsLib, slurpIpfsLib.sips[i].name, 500);
             sipNames[i] = slurpIpfsLib.sips[i].name;
             console.log(' in slurpHydrate loop: ', sipTrials);
         });
