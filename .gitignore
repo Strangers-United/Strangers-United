@@ -5,7 +5,6 @@
 
 
 ### User defined ###
-.env
 .OOFenv
 /node_modules
 
