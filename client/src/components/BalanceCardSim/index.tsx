@@ -168,7 +168,8 @@ const TokenRow = ({
                 <Grid item xs={2}>
                     <span className="remaining-fields">{ // TODO which class? fluid issue on mobile?
                         <div style={{ display: "flex", width: "100%", height: "100%" }}>
-                            <TestChartEmbed sip={simulatedPrice} />
+                            <TestChartEmbed sip={simulatedPrice} spec={'bar2'} />
+                            {/* bar = colored bar, else coloredline */}
                         </div>}
                     </span>
                 </Grid>
