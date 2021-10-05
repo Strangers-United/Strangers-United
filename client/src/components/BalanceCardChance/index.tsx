@@ -1,19 +1,11 @@
 import { useWeb3React } from "@web3-react/core";
 import { useEffect } from "react";
-import { rinkebyTokenList } from "../../utils/token";
-import { web3Instance } from "../../utils/web3Context";
-import { AbiItem } from "web3-utils";
-import CustomizedCard from "../CustomizedCard";
+import { Sparklines, SparklinesBars } from "react-sparklines-typescript";
+import { fetchSlurpLib } from "../../reducers/slurpHydrate";
 import { fetchTokenBalance, TokenState } from "../../reducers/tokenBalance";
 import { useAppDispatch, useAppSelector } from "../../store";
+import CustomizedCard from "../CustomizedCard";
 import "./styles.scss";
-import {
-    Sparklines,
-    SparklinesLine,
-    SparklinesCurve,
-    SparklinesBars,
-} from "react-sparklines-typescript";
-import { fetchSlurpLib, SlurpState } from "../../reducers/slurpHydrate";
 
 let tempData1 = [
     0.14427115522960857, 0.20852389823055525, 0.27277664123149864,

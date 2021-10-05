@@ -10,6 +10,8 @@ import { useAppDispatch, useAppSelector } from "../../store";
 import CustomizedCard from "../CustomizedCard";
 import "./styles.scss";
 import RefreshIcon from "@mui/icons-material/Refresh";
+import { useWeb3React } from "@web3-react/core";
+import Loading from "../Loading";
 
 const BalanceCard = () => {
     // ==================================

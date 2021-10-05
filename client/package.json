@@ -11,7 +11,6 @@
         "@testing-library/jest-dom": "^5.11.4",
         "@testing-library/react": "^11.1.0",
         "@testing-library/user-event": "^12.1.10",
-        "@truffle/contract": "^4.3.33",
         "@types/jest": "^26.0.15",
         "@types/node": "^12.0.0",
         "@types/react": "^17.0.0",
@@ -22,10 +21,13 @@
         "@web3-react/injected-connector": "^6.0.7",
         "@web3-react/network-connector": "^6.1.9",
         "@web3-react/types": "^6.0.7",
+        "bootstrap": "^5.1.1",
         "chai": "^4.3.4",
         "chai-as-promised": "^7.1.1",
+        "dotenv": "^10.0.0",
         "ipfs-http-client": "^53.0.0",
         "jstat": "^1.9.5",
+        "parcel-bundler": "^1.12.3",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
         "react-redux": "^7.2.5",
@@ -41,13 +43,15 @@
         "vega-embed": "^6.19.1",
         "vega-lite": "^5.1.1",
         "web-vitals": "^1.0.1",
-        "web3": "^1.5.2"
+        "web3": "^1.6.0"
     },
     "scripts": {
-        "start": "react-scripts start",
-        "build": "react-scripts build",
-        "test": "react-scripts test",
-        "eject": "react-scripts eject"
+        "start": "rm -rf .cache && rm -rf dist && parcel src/index.html --open",
+        "build": "parcel build src/index.html --no-source-maps",
+        "serve": "serve dist",
+        "test": "jest --verbose",
+        "test:watch": "jest --watch",
+        "lint": "tsc --noEmit"
     },
     "eslintConfig": {
         "extends": [
@@ -68,6 +72,13 @@
         ]
     },
     "devDependencies": {
-        "mocha": "^9.1.1"
+        "@babel/core": "^7.9.6",
+        "@babel/preset-react": "^7.9.4",
+        "@babel/preset-typescript": "^7.9.0",
+        "babel-plugin-macros": "^2.8.0",
+        "jest": "^26.0.1",
+        "mocha": "^9.1.1",
+        "prettier": "^2.0.5",
+        "serve": "^11.3.0"
     }
 }

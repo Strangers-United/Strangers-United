@@ -1,6 +1,6 @@
 import { useWeb3React } from "@web3-react/core";
 import { useEffect, useState } from "react";
-import { injectedConnector } from "../../utils/connector";
+import { injectedConnector } from "../../utils/Connector";
 import { connect } from "../../reducers/metamask";
 import "./styles.scss";
 import { useAppDispatch } from "../../store";
@@ -26,8 +26,9 @@ const NavBar = () => {
     // STATE
     // ==================================
     const { chainId, account, active, error, activate } = useWeb3React();
-    const [isConnectToTargetNetwork, setIsConnectToTargetNetwork] =
-        useState(false);
+    const [isConnectToTargetNetwork, setIsConnectToTargetNetwork] = useState(
+        false
+    );
     const [loaded, setLoaded] = useState(false);
     const dispatch = useAppDispatch();
     // const classes = useStyles();
@@ -81,7 +82,7 @@ const NavBar = () => {
                 });
                 setIsConnectToTargetNetwork(true);
             }
-        } catch (switchErr: any) {
+        } catch (switchErr) {
             // add network if not exist
             if (switchErr.code === 4902) {
                 try {
