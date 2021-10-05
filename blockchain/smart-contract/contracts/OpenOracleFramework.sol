@@ -755,7 +755,7 @@ contract OpenOracleFramework {
         );
 
         if (hasPass[buyer] <= block.timestamp) {
-            hasPass[buyer] = block.timestamp.add + duration;
+            hasPass[buyer] = block.timestamp + duration;
         } else {
             hasPass[buyer] = hasPass[buyer] + duration;
         }
