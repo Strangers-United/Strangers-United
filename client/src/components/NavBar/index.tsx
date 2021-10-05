@@ -1,6 +1,6 @@
 import { useWeb3React } from "@web3-react/core";
 import { useEffect, useState } from "react";
-import { injectedConnector } from "../../utils/Connector";
+import { injectedConnector } from "../../utils/connector";
 import { connect } from "../../reducers/metamask";
 import "./styles.scss";
 import { useAppDispatch } from "../../store";
