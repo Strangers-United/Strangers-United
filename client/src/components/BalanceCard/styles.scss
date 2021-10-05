@@ -8,6 +8,20 @@
         .symbol {
             font-weight: 700;
         }
+        &__textfield {
+            color: #FFF;
+        }
+        &__input {
+            text-align: right;
+        }
+        &__focused {
+            border-color: red;
+        }
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
     }
 
     .token-row-header {
@@ -28,7 +42,10 @@
             margin: 0;
         }
         &__cell {
-            text-align: right;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
         }
     }
+
 }

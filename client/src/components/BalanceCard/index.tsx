@@ -1,9 +1,10 @@
-import { Grid, IconButton } from "@mui/material";
+import { Grid, IconButton, FormControl, OutlinedInput } from "@mui/material";
 import { useEffect } from "react";
 import {
     fetchTokenBalance,
     TokenState,
     ITokenBalanceHeader,
+    updateThreshold,
 } from "../../reducers/tokenBalance";
 import { useAppDispatch, useAppSelector } from "../../store";
 import CustomizedCard from "../CustomizedCard";
@@ -94,13 +95,28 @@ const TokenRow = ({
     isHeader: boolean;
     headers: ITokenBalanceHeader[];
 }) => {
+    const dispatch = useAppDispatch();
+
+    const thresholdValueOnChange = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        if (token) {
+            dispatch(
+                updateThreshold({
+                    symbol: token.symbol,
+                    value: Number(event.target.value),
+                })
+            );
+        }
+    };
+
     if (isHeader) {
         return (
             <Grid container className="token-row-header">
-                <Grid item xs={2}>
+                <Grid item xs={1}>
                     <span className="symbol">Symbol</span>
                 </Grid>
-                <Grid item container xs={10} className="remaining-fields">
+                <Grid item container xs={11} className="remaining-fields">
                     {headers.map((header) => {
                         return (
                             <Grid
@@ -119,11 +135,37 @@ const TokenRow = ({
     } else if (token) {
         return (
             <Grid container className="token-row">
-                <Grid item xs={2}>
+                <Grid item xs={1}>
                     <span className="symbol">{token.symbol}</span>
                 </Grid>
-                <Grid item container xs={10} className="remaining-fields">
+                <Grid item container xs={11} className="remaining-fields">
                     {headers.map((header) => {
+                        if (header.editable) {
+                            return (
+                                <Grid
+                                    key={`token-${header.key}`}
+                                    item
+                                    xs
+                                    className="remaining-fields__cell"
+                                >
+                                    <FormControl className="token-row__form-control">
+                                        <OutlinedInput
+                                            value={token[header.key]}
+                                            onChange={thresholdValueOnChange}
+                                            classes={{
+                                                root: "token-row__textfield",
+                                                input: "token-row__input",
+                                                focused: "token-row__focused",
+                                            }}
+                                            inputProps={{
+                                                min: 0,
+                                                type: "number",
+                                            }}
+                                        />
+                                    </FormControl>
+                                </Grid>
+                            );
+                        }
                         return (
                             <Grid
                                 key={`token-${header.key}`}

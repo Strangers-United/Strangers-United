@@ -140,6 +140,7 @@ const tokenBalanceSlice = createSlice({
             state.tokenList = state.tokenList.map((token) => {
                 if (token.symbol === action.payload.symbol) {
                     token.threshold = action.payload.value;
+                    console.log("==== new threshold", action.payload.value);
                 }
                 return token;
             });
@@ -160,4 +161,5 @@ const tokenBalanceSlice = createSlice({
     },
 });
 
+export const { updateThreshold } = tokenBalanceSlice.actions;
 export default tokenBalanceSlice.reducer;
