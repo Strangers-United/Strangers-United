@@ -25,7 +25,7 @@ const currentPriceDataSupplier = (slurp: any) => {
         console.log('what is here ', vegaData);
         return {
             vegaData
-            // value: sipListIn[0].sipMatrices[0] 
+            // value: sipListIn[0].sipMatrices[0]
         };
     });
 }
