@@ -1,7 +1,7 @@
 import { useWeb3React } from "@web3-react/core";
 import React, { ReactElement, useEffect, useState } from "react";
 import { Vega } from 'react-vega';
-import BalanceCardChance from "../../components/BalanceCardChance";
+import BalanceCardSim from "../../components/BalanceCardSim";
 import Chart from "../../components/Chart";
 import useMsg from "../../hooks/CustomMessageHook";
 //import Histogram from "../../components/Histogram";
@@ -50,7 +50,7 @@ const Chance = () => {
     // ==================================
     return (
         <div>
-            <BalanceCardChance />
+            <BalanceCardSim />
             {/* <Chart /> */}
             <TestChartEmbed />
         </div>

@@ -3,10 +3,12 @@ import { Vega } from 'react-vega';
 import { useAppDispatch, useAppSelector } from "../../store";
 
 /* Example https://vega.github.io/vega-lite/examples/bar.html */
-const TestChartEmbed = () => {
-    const sipList = useAppSelector((state) => state.slurpList.slurpList);
-    console.log('Use this in test embed ', sipList);
-
+const TestChartEmbed = (props: any) => {
+    //const sipList = useAppSelector((state) => state.slurpList.slurpList);
+    // console.log('Use this in test embed ', sipList);
+    if (!props.sip) {
+        return <div>No Data</div>;
+    }
     let vegaData: any = {
         table: [
             { a: 1, b: 10 },
@@ -26,41 +28,27 @@ const TestChartEmbed = () => {
             { a: 5, b: 10 }
         ]
     };
-    if (sipList[0].location !== "init state") { // TODO hack until figure out init state defaults
-        sipList[0].sipMatrices[4].forEach((element, index1) => {
-            vegaData.table[index1] = {
-                "a": index1,
-                "b": element
-            };
-        });
-        //console.log(vegaData.table.reduce((acc: number, trials: any) => acc = acc > trials.b ? acc : trials.b, 0));
-    }
-    console.log('Use this max value in selected sip ', vegaData.table);
-    const spec: any = {
-        $schema: "https://vega.github.io/schema/vega-lite/v5.json",
-        data: {
-            /* TODO: Change data to bitcoinData */
-            values: [
-                { day: "Mon", value: 120 },
-                { day: "Tue", value: 200 },
-                { day: "Wed", value: 150 },
-                { day: "Thu", value: 70 },
-                { day: "Fri", value: 110 }
-            ]
-        },
-        mark: "bar",
-        width: 600,
-        height: 200,
-        /* TODO: Update the encoding to display bitcoin price over time */
-        encoding: {
-            x: { field: "day", type: "nominal" },
-            y: { field: "value", type: "quantitative" }
-            /* Challenge 1: Try customizing the bar color */
-        }
-    };
+    // if (sipList[0].location !== "init state") { // TODO hack until figure out init state defaults
+    console.log('Use this in textChar props ', props);
+    props.sip.forEach((element: any, index1: string | number) => {
+        vegaData.table[index1] = {
+            "a": index1,
+            "Range": element
+        };
+    });
+    //console.log(vegaData.table.reduce((acc: number, trials: any) => acc = acc > trials.b ? acc : trials.b, 0));
+    // }
+    //console.log('Use this max value in selected sip ', vegaData.table);
+
     const spec1: any = {
         "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-        "title": "Portfolio Price % Change Distribution",
+        "title": "Simulated Daily Price",
+        "width": 250,
+        "height": 125,
+        "autosize": {
+            "type": "fit",
+            "contains": "padding"
+        },
         "data": {
             "name": "table"
         },
@@ -68,7 +56,7 @@ const TestChartEmbed = () => {
         "encoding": {
             "x": {
                 "bin": true,
-                "field": "b"
+                "field": "Range"
             },
             "y": {
                 "aggregate": "count"

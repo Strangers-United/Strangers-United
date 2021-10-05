@@ -1,0 +1,34 @@
+@import '../../index.scss';
+.balance-card {
+    .token-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.8em;
+        .symbol {
+            font-weight: 700;
+        }
+    }
+
+    .token-row-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1em;
+        .symbol {
+            font-weight: 100;
+            color: $dark-white;
+        }
+    }
+
+    .remaining-fields {
+        &__header {
+            font-weight: 100;
+            color: $dark-white;
+            margin: 0;
+        }
+        &__cell {
+            text-align: right;
+        }
+    }
+}
