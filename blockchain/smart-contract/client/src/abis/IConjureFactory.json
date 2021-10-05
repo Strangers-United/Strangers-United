@@ -1,0 +1,279 @@
+{
+  "contractName": "IConjureFactory",
+  "abi": [
+    {
+      "inputs": [],
+      "name": "getConjureRouter",
+      "outputs": [
+        {
+          "internalType": "address payable",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.8.6+commit.11564f7e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"name\":\"getConjureRouter\",\"outputs\":[{\"internalType\":\"address payable\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"author\":\"Conjure Finance Team\",\"kind\":\"dev\",\"methods\":{\"getConjureRouter()\":{\"details\":\"gets the current conjure router\",\"returns\":{\"_0\":\"the current conjure router\"}}},\"title\":\"IConjureFactory\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"notice\":\"Interface for interacting with the ConjureFactory Contract\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/interfaces/IConjureFactory.sol\":\"IConjureFactory\"},\"evmVersion\":\"berlin\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/interfaces/IConjureFactory.sol\":{\"keccak256\":\"0x28f73010e55dddc85c3e16ae9e1383f53da7c8a886171205ae9bf2fbd9dadfdd\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://51520d1e10d881361941ceb0de33c1f15e7bc6797f6342b425abe5061ce2fd58\",\"dweb:/ipfs/QmaaWygAHX3vo9QyAJARpasHxkTEvzWXaH56HBft9G6u5j\"]}},\"version\":1}",
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "immutableReferences": {},
+  "generatedSources": [],
+  "deployedGeneratedSources": [],
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "// SPDX-License-Identifier: MIT\npragma solidity >=0.8.6;\n\n/// @author Conjure Finance Team\n/// @title IConjureFactory\n/// @notice Interface for interacting with the ConjureFactory Contract\ninterface IConjureFactory {\n    /**\n     * @dev gets the current conjure router\n     *\n     * @return the current conjure router\n     */\n    function getConjureRouter() external returns (address payable);\n}\n",
+  "sourcePath": "/home/francesco/workspace/smart-contracts/ETHGlobal-2021/Strangers-United/blockchain/smart-contract/contracts/interfaces/IConjureFactory.sol",
+  "ast": {
+    "absolutePath": "project:/contracts/interfaces/IConjureFactory.sol",
+    "exportedSymbols": {
+      "IConjureFactory": [
+        2726
+      ]
+    },
+    "id": 2727,
+    "license": "MIT",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 2718,
+        "literals": [
+          "solidity",
+          ">=",
+          "0.8",
+          ".6"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "32:24:2"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": {
+          "id": 2719,
+          "nodeType": "StructuredDocumentation",
+          "src": "58:131:2",
+          "text": "@author Conjure Finance Team\n @title IConjureFactory\n @notice Interface for interacting with the ConjureFactory Contract"
+        },
+        "fullyImplemented": false,
+        "id": 2726,
+        "linearizedBaseContracts": [
+          2726
+        ],
+        "name": "IConjureFactory",
+        "nameLocation": "199:15:2",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "documentation": {
+              "id": 2720,
+              "nodeType": "StructuredDocumentation",
+              "src": "221:104:2",
+              "text": " @dev gets the current conjure router\n @return the current conjure router"
+            },
+            "functionSelector": "c216844a",
+            "id": 2725,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getConjureRouter",
+            "nameLocation": "339:16:2",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2721,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "355:2:2"
+            },
+            "returnParameters": {
+              "id": 2724,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2723,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2725,
+                  "src": "376:15:2",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address_payable",
+                    "typeString": "address payable"
+                  },
+                  "typeName": {
+                    "id": 2722,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "376:15:2",
+                    "stateMutability": "payable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address_payable",
+                      "typeString": "address payable"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "375:17:2"
+            },
+            "scope": 2726,
+            "src": "330:63:2",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "scope": 2727,
+        "src": "189:206:2",
+        "usedErrors": []
+      }
+    ],
+    "src": "32:364:2"
+  },
+  "legacyAST": {
+    "absolutePath": "project:/contracts/interfaces/IConjureFactory.sol",
+    "exportedSymbols": {
+      "IConjureFactory": [
+        2726
+      ]
+    },
+    "id": 2727,
+    "license": "MIT",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 2718,
+        "literals": [
+          "solidity",
+          ">=",
+          "0.8",
+          ".6"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "32:24:2"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": {
+          "id": 2719,
+          "nodeType": "StructuredDocumentation",
+          "src": "58:131:2",
+          "text": "@author Conjure Finance Team\n @title IConjureFactory\n @notice Interface for interacting with the ConjureFactory Contract"
+        },
+        "fullyImplemented": false,
+        "id": 2726,
+        "linearizedBaseContracts": [
+          2726
+        ],
+        "name": "IConjureFactory",
+        "nameLocation": "199:15:2",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "documentation": {
+              "id": 2720,
+              "nodeType": "StructuredDocumentation",
+              "src": "221:104:2",
+              "text": " @dev gets the current conjure router\n @return the current conjure router"
+            },
+            "functionSelector": "c216844a",
+            "id": 2725,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getConjureRouter",
+            "nameLocation": "339:16:2",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2721,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "355:2:2"
+            },
+            "returnParameters": {
+              "id": 2724,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2723,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2725,
+                  "src": "376:15:2",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address_payable",
+                    "typeString": "address payable"
+                  },
+                  "typeName": {
+                    "id": 2722,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "376:15:2",
+                    "stateMutability": "payable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address_payable",
+                      "typeString": "address payable"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "375:17:2"
+            },
+            "scope": 2726,
+            "src": "330:63:2",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "scope": 2727,
+        "src": "189:206:2",
+        "usedErrors": []
+      }
+    ],
+    "src": "32:364:2"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.8.6+commit.11564f7e.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.4.2",
+  "updatedAt": "2021-10-05T10:32:38.705Z",
+  "devdoc": {
+    "author": "Conjure Finance Team",
+    "kind": "dev",
+    "methods": {
+      "getConjureRouter()": {
+        "details": "gets the current conjure router",
+        "returns": {
+          "_0": "the current conjure router"
+        }
+      }
+    },
+    "title": "IConjureFactory",
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "notice": "Interface for interacting with the ConjureFactory Contract",
+    "version": 1
+  }
+}

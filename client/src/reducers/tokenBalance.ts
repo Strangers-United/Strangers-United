@@ -90,14 +90,14 @@ export const fetchTokenBalance = createAsyncThunk(
             const result =
                 process.env.REACT_APP_ENV === "production"
                     ? list.map((e, index) =>
-                        ((index + 1) * 100000000000000000).toString()
-                    )
+                          ((index + 1) * 100000000000000000).toString()
+                      )
                     : await TokenBalanceCheckerContract.methods
-                        .balance(
-                            accountAddress,
-                            list.map((e) => e.address)
-                        )
-                        .call();
+                          .balance(
+                              accountAddress,
+                              list.map((e) => e.address)
+                          )
+                          .call();
 
             return await Promise.all(
                 list.map(async (t: IToken, index) => {

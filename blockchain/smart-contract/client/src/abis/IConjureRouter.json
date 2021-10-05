@@ -1,0 +1,212 @@
+{
+  "contractName": "IConjureRouter",
+  "abi": [
+    {
+      "inputs": [],
+      "name": "deposit",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.8.6+commit.11564f7e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"name\":\"deposit\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"}],\"devdoc\":{\"author\":\"Conjure Finance Team\",\"kind\":\"dev\",\"methods\":{\"deposit()\":{\"details\":\"calls the deposit function\"}},\"title\":\"IConjureRouter\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"notice\":\"Interface for interacting with the ConjureRouter Contract\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/interfaces/IConjureRouter.sol\":\"IConjureRouter\"},\"evmVersion\":\"berlin\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/interfaces/IConjureRouter.sol\":{\"keccak256\":\"0xd867fdbc443c54cac798b4de9a0d7111e28fde086dee5628dde0b1d9084f9998\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://f7fa4d939f359661fe38cb17dd1b4ada19886a4d192a2bb7c22cba2ea021c624\",\"dweb:/ipfs/Qmcci7cUqrfRE9K4e8DHhCLByzjejmMQv6g9iZo8NJ9knE\"]}},\"version\":1}",
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "immutableReferences": {},
+  "generatedSources": [],
+  "deployedGeneratedSources": [],
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "// SPDX-License-Identifier: MIT\npragma solidity >=0.8.6;\n\n/// @author Conjure Finance Team\n/// @title IConjureRouter\n/// @notice Interface for interacting with the ConjureRouter Contract\ninterface IConjureRouter {\n    /**\n     * @dev calls the deposit function\n     */\n    function deposit() external payable;\n}\n",
+  "sourcePath": "/home/francesco/workspace/smart-contracts/ETHGlobal-2021/Strangers-United/blockchain/smart-contract/contracts/interfaces/IConjureRouter.sol",
+  "ast": {
+    "absolutePath": "project:/contracts/interfaces/IConjureRouter.sol",
+    "exportedSymbols": {
+      "IConjureRouter": [
+        2734
+      ]
+    },
+    "id": 2735,
+    "license": "MIT",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 2728,
+        "literals": [
+          "solidity",
+          ">=",
+          "0.8",
+          ".6"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "32:24:3"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": {
+          "id": 2729,
+          "nodeType": "StructuredDocumentation",
+          "src": "58:129:3",
+          "text": "@author Conjure Finance Team\n @title IConjureRouter\n @notice Interface for interacting with the ConjureRouter Contract"
+        },
+        "fullyImplemented": false,
+        "id": 2734,
+        "linearizedBaseContracts": [
+          2734
+        ],
+        "name": "IConjureRouter",
+        "nameLocation": "197:14:3",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "documentation": {
+              "id": 2730,
+              "nodeType": "StructuredDocumentation",
+              "src": "218:50:3",
+              "text": " @dev calls the deposit function"
+            },
+            "functionSelector": "d0e30db0",
+            "id": 2733,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "deposit",
+            "nameLocation": "282:7:3",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2731,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "289:2:3"
+            },
+            "returnParameters": {
+              "id": 2732,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "308:0:3"
+            },
+            "scope": 2734,
+            "src": "273:36:3",
+            "stateMutability": "payable",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "scope": 2735,
+        "src": "187:124:3",
+        "usedErrors": []
+      }
+    ],
+    "src": "32:280:3"
+  },
+  "legacyAST": {
+    "absolutePath": "project:/contracts/interfaces/IConjureRouter.sol",
+    "exportedSymbols": {
+      "IConjureRouter": [
+        2734
+      ]
+    },
+    "id": 2735,
+    "license": "MIT",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 2728,
+        "literals": [
+          "solidity",
+          ">=",
+          "0.8",
+          ".6"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "32:24:3"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": {
+          "id": 2729,
+          "nodeType": "StructuredDocumentation",
+          "src": "58:129:3",
+          "text": "@author Conjure Finance Team\n @title IConjureRouter\n @notice Interface for interacting with the ConjureRouter Contract"
+        },
+        "fullyImplemented": false,
+        "id": 2734,
+        "linearizedBaseContracts": [
+          2734
+        ],
+        "name": "IConjureRouter",
+        "nameLocation": "197:14:3",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "documentation": {
+              "id": 2730,
+              "nodeType": "StructuredDocumentation",
+              "src": "218:50:3",
+              "text": " @dev calls the deposit function"
+            },
+            "functionSelector": "d0e30db0",
+            "id": 2733,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "deposit",
+            "nameLocation": "282:7:3",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2731,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "289:2:3"
+            },
+            "returnParameters": {
+              "id": 2732,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "308:0:3"
+            },
+            "scope": 2734,
+            "src": "273:36:3",
+            "stateMutability": "payable",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "scope": 2735,
+        "src": "187:124:3",
+        "usedErrors": []
+      }
+    ],
+    "src": "32:280:3"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.8.6+commit.11564f7e.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.4.2",
+  "updatedAt": "2021-10-05T10:32:38.706Z",
+  "devdoc": {
+    "author": "Conjure Finance Team",
+    "kind": "dev",
+    "methods": {
+      "deposit()": {
+        "details": "calls the deposit function"
+      }
+    },
+    "title": "IConjureRouter",
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "notice": "Interface for interacting with the ConjureRouter Contract",
+    "version": 1
+  }
+}
