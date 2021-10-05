@@ -1,7 +1,7 @@
 import { useWeb3React } from "@web3-react/core";
 import { useEffect } from "react";
 import { abi, rinkebyTokenList } from "../../utils/token";
-import { web3Instance } from "../../utils/web3Context";
+import { web3Instance } from "../../utils/Web3Context";
 import { AbiItem } from "web3-utils";
 import CustomizedCard from "../CustomizedCard";
 import { fetchTokenBalance, TokenState } from "../../reducers/tokenBalance";
@@ -43,7 +43,7 @@ const BalanceCardChance = () => {
         <CustomizedCard title="Portfolio">
             <TokenRow isHeader />
             {tokenList.map((token: TokenState) => {
-                console.log('this is my token ', token.name);
+                console.log("this is my token ", token.name);
                 return (
                     <TokenRow
                         symbol={token.symbol}

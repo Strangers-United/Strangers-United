@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { abi, IToken, rinkebyTokenList, tokenList } from "../utils/token";
-import { web3Instance } from "../utils/web3Context";
+import { web3Instance } from "../utils/Web3Context";
 import { AbiItem } from "web3-utils";
 
 export interface TokenState {
