@@ -69,7 +69,7 @@ const NavBar = () => {
     // ==================================
     const switchToTargetNetwork = async () => {
         const network =
-            process.env.NODE_ENV === "production"
+            process.env.REACT_APP_ENV === "production"
                 ? process.env.REACT_APP_CHAINID
                 : process.env.REACT_APP_DEV_CHAINID;
         try {

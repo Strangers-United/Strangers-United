@@ -10,11 +10,13 @@ import CustomizedCard from "../CustomizedCard";
 import "./styles.scss";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import Loading from "../Loading";
+import { useWeb3React } from "@web3-react/core";
 
 const BalanceCard = () => {
     // ==================================
     // STATE
     // ==================================
+    const { account } = useWeb3React();
     const dispatch = useAppDispatch();
     const {
         state: tokenFetchState,
@@ -26,19 +28,26 @@ const BalanceCard = () => {
     // INIT
     // ==================================
     useEffect(() => {
-        getTokenBalance();
-    }, []);
+        if (account) {
+            getTokenBalance(account);
+        }
+    }, [account]);
     // ==================================
     // LISTENER
     // ==================================
     // ==================================
     // FUNCTIONS
     // ==================================
-    const getTokenBalance = async () => {
+    const getTokenBalance = (accountAddress: string) => {
         try {
-            dispatch(fetchTokenBalance());
+            dispatch(fetchTokenBalance(accountAddress));
         } catch (err) {
             console.log(err);
+        }
+    };
+    const refresh = () => {
+        if (account) {
+            getTokenBalance(account);
         }
     };
     // ==================================
@@ -50,7 +59,7 @@ const BalanceCard = () => {
             className="balance-card"
             title="Balance"
             actions={
-                <IconButton onClick={getTokenBalance}>
+                <IconButton onClick={refresh}>
                     <RefreshIcon style={{ color: "#FFF" }} />
                 </IconButton>
             }
@@ -85,11 +94,6 @@ const TokenRow = ({
     isHeader: boolean;
     headers: ITokenBalanceHeader[];
 }) => {
-    // const getKeyValue =
-    //     <T extends object, U extends keyof T>(obj: T) =>
-    //     (key: U) =>
-    //         obj[key];
-
     if (isHeader) {
         return (
             <Grid container className="token-row-header">

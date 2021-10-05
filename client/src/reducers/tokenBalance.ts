@@ -1,8 +1,9 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { abi, IToken, rinkebyTokenList, tokenList } from "../utils/token";
+import { IToken, rinkebyTokenList, tokenList } from "../utils/token";
 import { web3Instance } from "../utils/web3Context";
 import { AbiItem } from "web3-utils";
 import TokenBalanceCheckerContract from "../utils/tokenBalanceChecker";
+import { getTokenToUSDRate } from "../utils/chainlink";
 
 export interface TokenState {
     address: string;
@@ -10,7 +11,7 @@ export interface TokenState {
     symbol: string;
     balance: number;
     currentPrice: number;
-    usdValue: number;
+    usdValue: string;
     threshold: number;
     chance: number;
 }
@@ -42,7 +43,7 @@ const ether = {
     name: "Ether",
     balance: 0,
     currentPrice: 0,
-    usdValue: 0,
+    usdValue: "0",
     threshold: 0,
     chance: 0,
 } as TokenState;
@@ -56,7 +57,10 @@ const initialState = {
         { key: "chance", label: "Chance of Hit", editable: false },
     ],
     state: "fetching" as FETCH_STATE,
-    tokenList: rinkebyTokenList
+    tokenList: (process.env.REACT_APP_ENV === "production"
+        ? tokenList
+        : rinkebyTokenList
+    )
         .map((token: IToken) => {
             return {
                 address: token.address,
@@ -64,7 +68,7 @@ const initialState = {
                 symbol: "",
                 balance: 0,
                 currentPrice: 0,
-                usdValue: 0,
+                usdValue: "0",
                 threshold: 0,
                 chance: 0,
             };
@@ -74,37 +78,52 @@ const initialState = {
 
 export const fetchTokenBalance = createAsyncThunk(
     "tokenBalance/fetch",
-    async (): Promise<TokenState[]> => {
+    async (_accountAddress?: string): Promise<TokenState[]> => {
         try {
-            const tempAccount = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48";
+            const accountAddress =
+                _accountAddress || "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48";
             const list =
-                process.env.NODE_ENV === "production"
+                process.env.REACT_APP_ENV === "production"
                     ? tokenList
                     : rinkebyTokenList;
 
-            const result = await TokenBalanceCheckerContract.methods
-                .balance(
-                    tempAccount,
-                    list.map((e) => e.address)
-                )
-                .call();
+            const result =
+                process.env.REACT_APP_ENV === "production"
+                    ? list.map((e, index) =>
+                          ((index + 1) * 100000000000000000).toString()
+                      )
+                    : await TokenBalanceCheckerContract.methods
+                          .balance(
+                              accountAddress,
+                              list.map((e) => e.address)
+                          )
+                          .call();
 
-            return list.map((t: IToken, index) => {
-                return {
-                    address: t.address,
-                    name: t.name,
-                    symbol: t.token,
-                    balance: parseFloat(
+            return await Promise.all(
+                list.map(async (t: IToken, index) => {
+                    let currentPrice = 0;
+                    currentPrice = await getTokenToUSDRate(
+                        t.rateAddress,
+                        t.decimal
+                    );
+                    const balance = parseFloat(
                         web3Instance.utils.fromWei(result[index], "ether")
-                    ),
-                    currentPrice: 0,
-                    usdValue: 0,
-                    threshold: 0,
-                    chance: 0,
-                } as TokenState;
-            }) as TokenState[];
+                    );
+
+                    return {
+                        address: t.address,
+                        name: t.name,
+                        symbol: t.token,
+                        balance: balance,
+                        currentPrice: currentPrice,
+                        usdValue: (currentPrice * balance).toFixed(4),
+                        threshold: 0,
+                        chance: 0,
+                    } as TokenState;
+                }) as Promise<TokenState>[]
+            );
         } catch (err) {
-            console.log("==== err", err);
+            console.log("==== token balance err", err);
             return [];
         }
     }
