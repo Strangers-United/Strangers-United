@@ -104,6 +104,7 @@ const TokenRow = ({
                     {headers.map((header) => {
                         return (
                             <Grid
+                                key={header.label}
                                 item
                                 xs
                                 className="remaining-fields__header remaining-fields__cell"
@@ -124,7 +125,12 @@ const TokenRow = ({
                 <Grid item container xs={10} className="remaining-fields">
                     {headers.map((header) => {
                         return (
-                            <Grid item xs className="remaining-fields__cell">
+                            <Grid
+                                key={`token-${header.key}`}
+                                item
+                                xs
+                                className="remaining-fields__cell"
+                            >
                                 {token[header.key]}
                             </Grid>
                         );

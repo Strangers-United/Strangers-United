@@ -81,7 +81,6 @@ export const getTokenToUSDRate = async (address: string, unit: number) => {
                 .call();
             const ethPrice = parseFloat(ethRoundData.answer) / 10 ** 8;
 
-            console.log("==== ethPrice", price, ethPrice);
             return (price * ethPrice).toFixed(4);
         } else if (unit === 8) {
             return (parseFloat(weiPrice) / 10 ** 8).toFixed(4);
