@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.6;
+pragma solidity >=0.8.6;
 
 // address = 0x0 when get eth
 
