@@ -26,6 +26,7 @@ export interface ITokenBalanceState {
     headers: ITokenBalanceHeader[];
     state: FETCH_STATE;
     tokenList: TokenState[];
+    slp: number[];
 }
 
 export interface IUpdateThresholdPayload {
@@ -74,6 +75,7 @@ const initialState = {
             };
         })
         .concat(ether),
+    slp: [],
 } as ITokenBalanceState;
 
 export const fetchTokenBalance = createAsyncThunk(
@@ -145,6 +147,12 @@ const tokenBalanceSlice = createSlice({
                 return token;
             });
         },
+        triggerThreshold(
+            state: ITokenBalanceState,
+            action: PayloadAction<number>
+        ) {
+            console.log("==== debounce trigger", action.payload);
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -161,5 +169,5 @@ const tokenBalanceSlice = createSlice({
     },
 });
 
-export const { updateThreshold } = tokenBalanceSlice.actions;
+export const { updateThreshold, triggerThreshold } = tokenBalanceSlice.actions;
 export default tokenBalanceSlice.reducer;

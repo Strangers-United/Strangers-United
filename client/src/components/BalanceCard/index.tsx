@@ -1,10 +1,11 @@
 import { Grid, IconButton, FormControl, OutlinedInput } from "@mui/material";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
     fetchTokenBalance,
     TokenState,
     ITokenBalanceHeader,
     updateThreshold,
+    triggerThreshold,
 } from "../../reducers/tokenBalance";
 import { useAppDispatch, useAppSelector } from "../../store";
 import CustomizedCard from "../CustomizedCard";
@@ -14,6 +15,7 @@ import { useWeb3React } from "@web3-react/core";
 import Loading from "../Loading";
 import { fetchSlurpLib, SlurpState } from "../../reducers/slurpHydrate";
 import TestChartEmbed from "../TestChartEmbed";
+import { useDebouncedCallback } from "use-debounce";
 
 const BalanceCard = () => {
     // ==================================
@@ -109,22 +111,27 @@ const TokenRow = ({
     isHeader: boolean;
     headers: ITokenBalanceHeader[];
     simulationTrials?: any;
-
 }) => {
     const dispatch = useAppDispatch();
 
-    const thresholdValueOnChange = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => {
+    const handleInputOnChange = (value: number) => {
         if (token) {
             dispatch(
                 updateThreshold({
                     symbol: token.symbol,
-                    value: Number(event.target.value),
+                    value: Number(value),
                 })
             );
         }
+        debounceThresholdValueOnChange(value);
     };
+
+    const debounceThresholdValueOnChange = useDebouncedCallback(
+        (value: number) => {
+            dispatch(triggerThreshold(value));
+        },
+        250
+    );
 
     if (isHeader) {
         return (
@@ -149,22 +156,29 @@ const TokenRow = ({
             </Grid>
         );
     } else if (token) {
-        console.log('tokentokentokentokentoken: ', token.name, simulationTrials);
+        console.log(
+            "tokentokentokentokentoken: ",
+            token.name,
+            simulationTrials
+        );
         // in context are: currentPrice, threshold, usdValue, chance,balance, symbol, name, address
         // apply % chances in price ie simulationTrials to the current price for each trial
-        const simulatedPrice = simulationTrials.map((x: number) => x * token.currentPrice);
+        const simulatedPrice = simulationTrials.map(
+            (x: number) => x * token.currentPrice
+        );
         //console.log('simulatedPrice: ', simulatedPrice);
         // TODO: let user enter? chanceOperator? for now it is set to < ie risk of going down
         //console.log('token.threshold: ', token.threshold);
         // switch (symbol) {
         //  case '<': case '>': case '<=': case '>=':
-        console.log('token.threshold: ', token.threshold);
+        console.log("token.threshold: ", token.threshold);
         // TODO NOT DONE YET
-        const chanceOf = simulatedPrice.filter((v: number) => v < token.threshold); // operator defined by ui/user??
+        const chanceOf = simulatedPrice.filter(
+            (v: number) => v < token.threshold
+        ); // operator defined by ui/user??
         const chanceOut = chanceOf.length / simulationTrials.length;
 
-        console.log('chanceOut: ', chanceOut);
-
+        console.log("chanceOut: ", chanceOut);
 
         return (
             <Grid container className="token-row">
@@ -172,7 +186,7 @@ const TokenRow = ({
                     <span className="symbol">{token.symbol}</span>
                 </Grid>
                 <Grid item container xs={11} className="remaining-fields">
-                    {headers.map((header) => {
+                    {headers.map((header, index) => {
                         if (header.editable) {
                             return (
                                 <Grid
@@ -184,7 +198,11 @@ const TokenRow = ({
                                     <FormControl className="token-row__form-control">
                                         <OutlinedInput
                                             value={token[header.key]}
-                                            onChange={thresholdValueOnChange}
+                                            onChange={(e) => {
+                                                handleInputOnChange(
+                                                    Number(e.target.value)
+                                                );
+                                            }}
                                             classes={{
                                                 root: "token-row__textfield",
                                                 input: "token-row__input",
@@ -212,11 +230,23 @@ const TokenRow = ({
                     })}
                 </Grid>
                 <Grid item xs={2}>
-                    <span className="remaining-fields">{ // TODO which class? fluid issue on mobile?
-                        <div style={{ display: "flex", width: "100%", height: "100%" }}>
-                            <TestChartEmbed sip={simulatedPrice} spec={'bar2'} />
-                            {/* bar = colored bar, else coloredline */}
-                        </div>}
+                    <span className="remaining-fields">
+                        {
+                            // TODO which class? fluid issue on mobile?
+                            <div
+                                style={{
+                                    display: "flex",
+                                    width: "100%",
+                                    height: "100%",
+                                }}
+                            >
+                                <TestChartEmbed
+                                    sip={simulatedPrice}
+                                    spec={"bar2"}
+                                />
+                                {/* bar = colored bar, else coloredline */}
+                            </div>
+                        }
                     </span>
                 </Grid>
             </Grid>
