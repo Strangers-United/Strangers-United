@@ -12,6 +12,8 @@ import "./styles.scss";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import { useWeb3React } from "@web3-react/core";
 import Loading from "../Loading";
+import { fetchSlurpLib, SlurpState } from "../../reducers/slurpHydrate";
+import TestChartEmbed from "../TestChartEmbed";
 
 const BalanceCard = () => {
     // ==================================
@@ -24,6 +26,8 @@ const BalanceCard = () => {
         tokenList,
         headers,
     } = useAppSelector((state) => state.tokenList);
+    const sipList = useAppSelector((state) => state.slurpList.slurpList);
+    //console.log('get simulation data here: ', sipList);
 
     // ==================================
     // INIT
@@ -31,6 +35,7 @@ const BalanceCard = () => {
     useEffect(() => {
         if (account) {
             getTokenBalance(account);
+            getTokenSipMathLib();
         }
     }, [account]);
     // ==================================
@@ -51,6 +56,13 @@ const BalanceCard = () => {
             getTokenBalance(account);
         }
     };
+    const getTokenSipMathLib = async () => {
+        try {
+            dispatch(fetchSlurpLib());
+        } catch (err) {
+            console.log(err);
+        }
+    };
     // ==================================
     // RENDER
     // ==================================
@@ -68,13 +80,14 @@ const BalanceCard = () => {
             {tokenFetchState === "fetched" ? (
                 <>
                     <TokenRow isHeader headers={headers} />
-                    {tokenList.map((token: TokenState) => {
+                    {tokenList.map((token: TokenState, index) => {
                         return (
                             <TokenRow
                                 key={token.address}
                                 headers={headers}
                                 token={token}
                                 isHeader={false}
+                                simulationTrials={sipList[0].sipMatrices[index]}
                             />
                         );
                     })}
@@ -90,10 +103,13 @@ const TokenRow = ({
     token,
     isHeader,
     headers,
+    simulationTrials,
 }: {
     token?: TokenState;
     isHeader: boolean;
     headers: ITokenBalanceHeader[];
+    simulationTrials?: any;
+
 }) => {
     const dispatch = useAppDispatch();
 
@@ -133,6 +149,23 @@ const TokenRow = ({
             </Grid>
         );
     } else if (token) {
+        console.log('tokentokentokentokentoken: ', token.name, simulationTrials);
+        // in context are: currentPrice, threshold, usdValue, chance,balance, symbol, name, address
+        // apply % chances in price ie simulationTrials to the current price for each trial
+        const simulatedPrice = simulationTrials.map((x: number) => x * token.currentPrice);
+        //console.log('simulatedPrice: ', simulatedPrice);
+        // TODO: let user enter? chanceOperator? for now it is set to < ie risk of going down
+        //console.log('token.threshold: ', token.threshold);
+        // switch (symbol) {
+        //  case '<': case '>': case '<=': case '>=':
+        console.log('token.threshold: ', token.threshold);
+        // TODO NOT DONE YET
+        const chanceOf = simulatedPrice.filter((v: number) => v < token.threshold); // operator defined by ui/user??
+        const chanceOut = chanceOf.length / simulationTrials.length;
+
+        console.log('chanceOut: ', chanceOut);
+
+
         return (
             <Grid container className="token-row">
                 <Grid item xs={1}>
@@ -177,6 +210,14 @@ const TokenRow = ({
                             </Grid>
                         );
                     })}
+                </Grid>
+                <Grid item xs={2}>
+                    <span className="remaining-fields">{ // TODO which class? fluid issue on mobile?
+                        <div style={{ display: "flex", width: "100%", height: "100%" }}>
+                            <TestChartEmbed sip={simulatedPrice} spec={'bar2'} />
+                            {/* bar = colored bar, else coloredline */}
+                        </div>}
+                    </span>
                 </Grid>
             </Grid>
         );

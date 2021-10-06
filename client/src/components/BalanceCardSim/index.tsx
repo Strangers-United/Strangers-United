@@ -4,11 +4,13 @@ import {
     fetchTokenBalance,
     TokenState,
     ITokenBalanceHeader,
+    updateThreshold
 } from "../../reducers/tokenBalance";
 import { useAppDispatch, useAppSelector } from "../../store";
 import CustomizedCard from "../CustomizedCard";
 import "./styles.scss";
 import RefreshIcon from "@mui/icons-material/Refresh";
+import { useWeb3React } from "@web3-react/core";
 import Loading from "../Loading";
 import { fetchSlurpLib, SlurpState } from "../../reducers/slurpHydrate";
 import TestChartEmbed from "../TestChartEmbed";
@@ -18,6 +20,7 @@ const BalanceCardSim = () => {
     // ==================================
     // STATE
     // ==================================
+    const { account } = useWeb3React();
     const dispatch = useAppDispatch();
     const {
         state: tokenFetchState,
@@ -40,11 +43,16 @@ const BalanceCardSim = () => {
     // ==================================
     // FUNCTIONS
     // ==================================
-    const getTokenBalance = async () => {
+    const getTokenBalance = (accountAddress: string) => {
         try {
-            dispatch(fetchTokenBalance());
+            dispatch(fetchTokenBalance(accountAddress));
         } catch (err) {
             console.log(err);
+        }
+    };
+    const refresh = () => {
+        if (account) {
+            getTokenBalance(account);
         }
     };
     const getTokenSipMathLib = async () => {
@@ -64,7 +72,7 @@ const BalanceCardSim = () => {
             className="balance-card"
             title="Balance"
             actions={
-                <IconButton onClick={getTokenBalance}>
+                <IconButton onClick={refresh}>
                     <RefreshIcon style={{ color: "#FFF" }} />
                 </IconButton>
             }
@@ -108,10 +116,20 @@ const TokenRow = ({
     headers: ITokenBalanceHeader[];
     simulationTrials?: any;
 }) => {
-    // const getKeyValue =
-    //     <T extends object, U extends keyof T>(obj: T) =>
-    //     (key: U) =>
-    //         obj[key];
+    const dispatch = useAppDispatch();
+
+    const thresholdValueOnChange = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        if (token) {
+            dispatch(
+                updateThreshold({
+                    symbol: token.symbol,
+                    value: Number(event.target.value),
+                })
+            );
+        }
+    };
 
     if (isHeader) {
         return (
@@ -119,7 +137,7 @@ const TokenRow = ({
                 <Grid item xs={2}>
                     <span className="symbol">Symbol</span>
                 </Grid>
-                <Grid item container xs={10} className="remaining-fields">
+                <Grid item container xs={11} className="remaining-fields">
                     {headers.map((header) => {
                         return (
                             <Grid
@@ -135,43 +153,50 @@ const TokenRow = ({
             </Grid>
         );
     } else if (token) {
-        console.log('tokentokentokentokentoken: ', token.name, simulationTrials);
-        // in context are: currentPrice, threshold, usdValue, chance,balance, symbol, name, address
-        // apply % chances in price ie simulationTrials to the current price for each trial
-        const simulatedPrice = simulationTrials.map((x: number) => x * token.currentPrice);
-        //console.log('simulatedPrice: ', simulatedPrice);
-        // TODO: let user enter? chanceOperator? for now it is set to < ie risk of going down
-        //console.log('token.threshold: ', token.threshold);
-        // switch (symbol) {
-        //  case '<': case '>': case '<=': case '>=':
-        console.log('token.threshold: ', token.threshold);
-        // TODO NOT DONE YET
-        const chanceOf = simulatedPrice.filter((v: number) => v < token.threshold); // operator defined by ui/user??
-        const chanceOut = chanceOf.length / simulationTrials.length;
-
-        console.log('chanceOut: ', chanceOut);
-
         return (
             <Grid container className="token-row">
-                <Grid item xs={2}>
+                <Grid item xs={1}>
                     <span className="symbol">{token.symbol}</span>
                 </Grid>
-                <Grid item container xs={10} className="remaining-fields">
+                <Grid item container xs={11} className="remaining-fields">
                     {headers.map((header) => {
+                        if (header.editable) {
+                            return (
+                                <Grid
+                                    key={`token-${header.key}`}
+                                    item
+                                    xs
+                                    className="remaining-fields__cell"
+                                >
+                                    <FormControl className="token-row__form-control">
+                                        <OutlinedInput
+                                            value={token[header.key]}
+                                            onChange={thresholdValueOnChange}
+                                            classes={{
+                                                root: "token-row__textfield",
+                                                input: "token-row__input",
+                                                focused: "token-row__focused",
+                                            }}
+                                            inputProps={{
+                                                min: 0,
+                                                type: "number",
+                                            }}
+                                        />
+                                    </FormControl>
+                                </Grid>
+                            );
+                        }
                         return (
-                            <Grid item xs className="remaining-fields__cell">
+                            <Grid
+                                key={`token-${header.key}`}
+                                item
+                                xs
+                                className="remaining-fields__cell"
+                            >
                                 {token[header.key]}
                             </Grid>
                         );
                     })}
-                </Grid>
-                <Grid item xs={2}>
-                    <span className="remaining-fields">{ // TODO which class? fluid issue on mobile?
-                        <div style={{ display: "flex", width: "100%", height: "100%" }}>
-                            <TestChartEmbed sip={simulatedPrice} spec={'bar2'} />
-                            {/* bar = colored bar, else coloredline */}
-                        </div>}
-                    </span>
                 </Grid>
             </Grid>
         );
@@ -181,7 +206,5 @@ const TokenRow = ({
 };
 
 export default BalanceCardSim;
-function x(x: any, arg1: (number: any) => number) {
-    throw new Error("Function not implemented.");
-}
+
 
