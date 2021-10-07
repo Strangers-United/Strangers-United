@@ -59,7 +59,7 @@ def main(args):
         #####################
     """
     get_historical_data("eth", api_key, end_date="2021-10-06")
-    
+
     nakedFileName = '-'.join(str(e) for e in tokens)
     # Setup - Pick timeframe (1, 7, 30, 365)
     timeFrame = 30
@@ -120,7 +120,9 @@ def main(args):
 
     # Generte sipmath library json
     # use 3 4 or 5 TODO need linear optimization(?) to auto fit
-    Json(holder, outputFileNameJson, "KMM", [], 'dependent', 'u', "", 4)
+    # Json(holder, outputFileNameJson, "KMM", [], 'dependent', 'u', "", 4)
+    # use below line to convert the dataframe to json
+    holder.to_json(outputFileNameJson, orient='records')
     # SIPdata, file_name, author, SIPmetadata = [], dependence = 'independent', boundedness = 'u', bounds = [0, 1], term_saved = 5, seeds = [], setupInputs = []
 
     # Customize Metadata - TODO update metadata before first write?
