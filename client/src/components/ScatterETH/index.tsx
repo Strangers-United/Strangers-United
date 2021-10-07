@@ -21,18 +21,34 @@ const ScatterETH = (props: any) => {
     console.log('Use this vegaData.table for chart ', vegaData);
     console.log('token name for a/y axis ', props.tokenName);
     const specScatterETH: any = {
+        "background": null,
+        "config": {
+            "axis": {
+                "labelColor": "#ffffff",
+                "tickColor": "#bebec8",
+                "titleColor": "white",
+                "titleFontWeight": "normal",
+                "titleFontSize": 16,
+                "labelFont": "Helvetica",
+                "titleFont": "Helvetica",
+
+            },
+            "view": {
+                "strokeWidth": 0
+            }
+        },
         "data": {
             "name": "table"
         }, "mark": { "type": "point" },
         "encoding": {
             "x": {
-                "field": "ETH", "type": "quantitative", "scale": { "zero": false }
+                "field": "ETH", "type": "quantitative", "scale": { "zero": false },
             },
             "y": {
                 "field": "a", "type": "quantitative", "scale": { "zero": false }, "title": props.tokenName
             },
-            "color": { "field": "Data Type", "type": "nominal" },
-            "shape": { "field": "Data Type", "type": "nominal" }
+            "color": { "field": "Data Type", "type": "nominal", "scale": { "range": ["#ff0000", "#00ff00", "#0000ff"] } },
+            "shape": { "field": "Data Type", "type": "nominal", "scale": { "range": ["circle", "square", "triangle"] } },
         }
     }
     let charSpec = props.spec;

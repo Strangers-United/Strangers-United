@@ -21,12 +21,29 @@ const ScatterPut = (props: any) => {
     console.log('Use this vegaPUTData.table for chart ', vegaData);
     console.log('token name for a/y axis ', props.tokenName);
     const specScatterETH: any = {
+        "background": null,
+
+        "config": {
+            "axis": {
+                "labelColor": "#ffffff",
+                "tickColor": "#bebec8",
+                "titleColor": "white",
+                "titleFontWeight": "normal",
+                "titleFontSize": 16,
+                "labelFont": "Helvetica",
+                "titleFont": "Helvetica",
+
+            },
+            "view": {
+                "strokeWidth": 0
+            }
+        },
         "data": {
             "name": "table"
         }, "mark": { "type": "point" },
         "encoding": {
             "x": {
-                "field": "a", "type": "quantitative", "scale": { "zero": false }
+                "field": "a", "type": "quantitative", "scale": { "zero": false }, "title": props.tokenName
             },
             "y": {
                 "field": "b", "type": "quantitative", "scale": { "zero": false }, "title": props.tokenName

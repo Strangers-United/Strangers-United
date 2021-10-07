@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from "../../store";
 /* Example https://vega.github.io/vega-lite/examples/bar.html */
 const HistogramLive = (props: any) => {
     //const sipList = useAppSelector((state) => state.slurpList.slurpList);
-    // console.log('Use this in test embed ', sipList);
+    console.log('Use this in props in embed ', props);
     if (!props.sip) {
         return <div></div>; // no data TODO: hack for initial state of sipList is empty crying face
     }
@@ -17,8 +17,16 @@ const HistogramLive = (props: any) => {
             { a: 4, b: 10 },
         ]
     };
+    let currentPriceColor = "black";
+    const sum = props.sip.reduce((a: any, b: any) => a + b, 0);
+    const avg = (sum / props.sip.length) || 0;
+
+    console.log('average ', avg);
+    if (props.currentPrice < avg) { currentPriceColor = "red" }
+    else { currentPriceColor = "green" }
+
     // if (sipList[0].location !== "init state") { // TODO hack until figure out init state defaults
-    console.log('Use this in textChar props ', props);
+    // console.log('Use this in textChar props ', props);
     props.sip.forEach((element: any, index1: string | number) => {
         vegaData.table[index1] = {
             "a": index1,
@@ -33,19 +41,25 @@ const HistogramLive = (props: any) => {
 
     const specBarColored: any = {
         "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-        "title": "Simulated Daily Price",
+        "title": { "text": "Simulated Daily Price", "color": "white" },
+        "background": null,
+
         "config": {
             "style": {
                 "cell": {
                     "stroke": "transparent"
                 }
+            },
+            "axis": {
+                "labelColor": {
+                    "value": "white"
+                }
             }
+            /*         "autosize": {
+                        "type": "fit",
+                        "contains": "padding"
+                    }, */
         },
-        /*         "autosize": {
-                    "type": "fit",
-                    "contains": "padding"
-                }, */
-
         "data": {
             "name": "table"
         },
@@ -67,13 +81,16 @@ const HistogramLive = (props: any) => {
             },
             "encoding": {
                 "x": {
-                    "title": "Range",
                     "field": "bin_Range",
-                    "bin": { "binned": true }
+                    "bin": { "binned": true },
+                    "title": { "text": "", "color": "white" },
+
                 },
-                "x2": { "field": "bin_Range_end" },
+                "x2": {
+                    "field": "bin_Range_end",
+                },
                 "y": {
-                    "title": "Relative Frequency",
+                    "title": { "text": "Relative Frequency", "color": "white" },
                     "field": "PercentOfTotal",
                     "type": "quantitative",
                     "axis": {
@@ -86,7 +103,15 @@ const HistogramLive = (props: any) => {
             "mark": "rule",
             "encoding": {
                 "x": { "aggregate": "mean", "field": "b" },
-                "color": { "value": "red" },
+                "color": { "value": "yellow" },
+                "size": { "value": 3 }
+            }
+        },
+        {
+            "mark": "rule",
+            "encoding": {
+                "x": { "aggregate": "mean", "field": "currentPrice" },
+                "color": { "value": currentPriceColor },
                 "size": { "value": 5 }
             }
         }]

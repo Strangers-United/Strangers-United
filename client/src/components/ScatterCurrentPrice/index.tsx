@@ -44,6 +44,22 @@ const ScatterComboChart = (props: any) => {
     }, [view]);
 
     const spec: VisualizationSpec = {
+        "background": null,
+        "config": {
+            "axis": {
+                "labelColor": "#ffffff",
+                "tickColor": "#bebec8",
+                "titleColor": "white",
+                "titleFontWeight": "normal",
+                "titleFontSize": 16,
+                "labelFont": "Helvetica",
+                "titleFont": "Helvetica",
+
+            },
+            "view": {
+                "strokeWidth": 0
+            }
+        },
         "data": {
             "name": "data"
         }, "mark": { "type": "point" },
@@ -54,7 +70,7 @@ const ScatterComboChart = (props: any) => {
             "y": {
                 "field": "a", "type": "quantitative", "scale": { "zero": false }
             },
-            "color": { "field": "Data Type", "type": "nominal" },
+            "color": { "field": "Data Type", "type": "nominal", "scale": { "range": ["#ff0000", "#00ff00", "#0000ff"] } },
             "shape": { "field": "Data Type", "type": "nominal" }
 
         }

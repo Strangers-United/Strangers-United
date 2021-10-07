@@ -34,7 +34,7 @@ const BalanceCard = () => {
     } = useAppSelector((state) => state.tokenList);
     const sipList = useAppSelector((state) => state.slurpList.slurpList);
     console.log('get simulation data here: ', sipList);
-
+    const [lastestThreshold, setLatestThreshold] = useState(0);
     // ==================================
     // INIT
     // ==================================
@@ -42,17 +42,23 @@ const BalanceCard = () => {
         if (account) {
             getTokenBalance(account);
             getTokenSipMathLib();
+            //  setLatestThreshold(tokenList[0].threshold);
+            //  lastestThreshold(tokenList[0].threshold);
         }
     }, [account]);
+
+    useEffect(() => {
+        if (tokenList.length > 0) {
+            console.log('tokenList changed')
+            // function you want to call
+            // lastestThreshold(tokenList[0].threshold);
+            console.log('inside use effect threshold', tokenList[0].threshold)
+        }
+    }, [tokenList])
     // ==================================
     // LISTENER
     // ==================================
-    let currentThreshold: any;
-    const getTokenThershold = (index: number) => {
-        console.log('this works ', tokenList[index].threshold);
-        currentThreshold = tokenList[index].threshold;
-    }
-    console.log('yooooooo ', currentThreshold); // this doesnt work
+
 
     // ==================================
     // FUNCTIONS
@@ -76,6 +82,13 @@ const BalanceCard = () => {
             console.log(err);
         }
     };
+    /*     const getLastestThreshold = (threshold: number) => {
+            try {
+                //    dispatch(lastestThreshold());
+            } catch (err) {
+                console.log(err);
+            }
+        }; */
     // ==================================
     // RENDER
     // ==================================
@@ -178,8 +191,10 @@ const TokenRow = ({
             token.name,
             simulationTrials,
             token.threshold,
-            sipMetaData
+            sipMetaData,
         );
+        // console.log('yooooooo ', latestThreshold(tokenlist[0].thershold)); // this doesnt work
+
         // in context are: currentPrice, threshold, usdValue, chance,balance, symbol, name, address
         // apply % chances in price ie simulationTrials to the current price for each trial
         const simulatedPrice = simulationTrials.map(
@@ -311,26 +326,7 @@ const TokenRow = ({
                         }
                     </span>
                 </Grid>
-                <Grid item xs={8}>
-                    <span className="remaining-fields">
-                        {
-                            // TODO which class? fluid issue on mobile?
-                            <div
-                                style={{
-                                    display: "flex",
-                                    width: "100%",
-                                    height: "100%",
-                                }}
-                            >
-                                <ScatterCurrentPrice
-                                    spec={"scatter"}
-                                    inputTable={vegaData}
-                                />
-                            </div>
-                        }
-                    </span>
-                </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={3}>
                     <span className="remaining-fields">
                         {
                             // TODO which class? fluid issue on mobile?
@@ -350,7 +346,7 @@ const TokenRow = ({
                         }
                     </span>
                 </Grid>
-                <Grid item xs={10}>
+                <Grid item xs={5}>
                     <span className="remaining-fields">
                         {
                             // TODO which class? fluid issue on mobile?
@@ -370,6 +366,25 @@ const TokenRow = ({
                         }
                     </span>
                 </Grid>
+                {/*  <Grid item xs={4}>
+                    <span className="remaining-fields">
+                        {
+                            // TODO which class? fluid issue on mobile?
+                            <div
+                                style={{
+                                    display: "flex",
+                                    width: "100%",
+                                    height: "100%",
+                                }}
+                            >
+                                <ScatterCurrentPrice
+                                    spec={"scatter"}
+                                    inputTable={vegaData}
+                                />
+                            </div>
+                        }
+                    </span>
+                </Grid> */}
             </Grid>
         );
     }
