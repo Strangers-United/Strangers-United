@@ -13,7 +13,7 @@ import RefreshIcon from "@mui/icons-material/Refresh";
 import { useWeb3React } from "@web3-react/core";
 import Loading from "../Loading";
 import { fetchSlurpLib, SlurpState } from "../../reducers/slurpHydrate";
-import TestChartEmbed from "../TestChartEmbed";
+import TestChartEmbed from "../HistogramLive";
 
 
 const BalanceCardSim = () => {

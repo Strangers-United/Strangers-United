@@ -14,8 +14,12 @@ import RefreshIcon from "@mui/icons-material/Refresh";
 import { useWeb3React } from "@web3-react/core";
 import Loading from "../Loading";
 import { fetchSlurpLib, SlurpState } from "../../reducers/slurpHydrate";
-import TestChartEmbed from "../TestChartEmbed";
+import HistogramLive from "../HistogramLive";
 import { useDebouncedCallback } from "use-debounce";
+import ScatterCurrentPrice from "../ScatterCurrentPrice";
+import ScatterETH from "../ScatterETH";
+import ScatterPut from "../ScatterPut";
+import { tokenList } from "../../utils/token";
 
 const BalanceCard = () => {
     // ==================================
@@ -29,7 +33,7 @@ const BalanceCard = () => {
         headers,
     } = useAppSelector((state) => state.tokenList);
     const sipList = useAppSelector((state) => state.slurpList.slurpList);
-    //console.log('get simulation data here: ', sipList);
+    console.log('get simulation data here: ', sipList);
 
     // ==================================
     // INIT
@@ -43,6 +47,13 @@ const BalanceCard = () => {
     // ==================================
     // LISTENER
     // ==================================
+    let currentThreshold: any;
+    const getTokenThershold = (index: number) => {
+        console.log('this works ', tokenList[index].threshold);
+        currentThreshold = tokenList[index].threshold;
+    }
+    console.log('yooooooo ', currentThreshold); // this doesnt work
+
     // ==================================
     // FUNCTIONS
     // ==================================
@@ -90,6 +101,8 @@ const BalanceCard = () => {
                                 token={token}
                                 isHeader={false}
                                 simulationTrials={sipList[0].sipMatrices[index]}
+                                simulationTrials2={sipList[0].sipMatrices[0]} // TODO let user select? IMPORTANT: this is always ETH
+                                sipMetaData={sipList[0].sipOGMetaData[index]}
                             />
                         );
                     })}
@@ -106,11 +119,15 @@ const TokenRow = ({
     isHeader,
     headers,
     simulationTrials,
+    simulationTrials2,
+    sipMetaData,
 }: {
     token?: TokenState;
     isHeader: boolean;
     headers: ITokenBalanceHeader[];
     simulationTrials?: any;
+    simulationTrials2?: any;
+    sipMetaData?: any;
 }) => {
     const dispatch = useAppDispatch();
 
@@ -159,26 +176,70 @@ const TokenRow = ({
         console.log(
             "tokentokentokentokentoken: ",
             token.name,
-            simulationTrials
+            simulationTrials,
+            token.threshold,
+            sipMetaData
         );
         // in context are: currentPrice, threshold, usdValue, chance,balance, symbol, name, address
         // apply % chances in price ie simulationTrials to the current price for each trial
         const simulatedPrice = simulationTrials.map(
             (x: number) => x * token.currentPrice
         );
-        //console.log('simulatedPrice: ', simulatedPrice);
+        console.log('simulated price: ', simulatedPrice);
+        // this is today's likely price range for charting
         // TODO: let user enter? chanceOperator? for now it is set to < ie risk of going down
         //console.log('token.threshold: ', token.threshold);
         // switch (symbol) {
         //  case '<': case '>': case '<=': case '>=':
-        console.log("token.threshold: ", token.threshold);
+        console.log("token.threshold: ", token.threshold); // HOW TO GET DEBOUNCE THRESHOLD?
         // TODO NOT DONE YET
         const chanceOf = simulatedPrice.filter(
-            (v: number) => v < token.threshold
-        ); // operator defined by ui/user??
+            (v: number) => v < token.threshold // Crying this is working
+        ); // operator '<' should really be defined by ui/user??
         const chanceOut = chanceOf.length / simulationTrials.length;
-
         console.log("chanceOut: ", chanceOut);
+        console.log("simulationTrials2: ", simulationTrials2);
+
+        // SCATTER PLOT CHART DATA PREP - TODO add current price DOT to this
+        let vegaData: any = {
+            table: []
+        };
+        simulationTrials.forEach((element: any, index1: string | number) => {
+            vegaData.table[index1] = {
+                "a": element, // TODO: fix this
+                "Data Type": "History"
+            };
+        });
+        simulationTrials2.forEach((element: any, index1: string | number) => {
+            vegaData.table[index1].ETH = element // TODO: fix this
+        });
+        vegaData.table.append = {
+            "Data Type": "Current", "a": 1, "ETH": 1 // TODO updated values needed here, do this in % change land or $?
+        };
+        console.log("vegaData in balanceCard: ", vegaData);
+        // END CHART DATA PREP
+
+        // PUT CHART DATA PREP
+        // console.log(tokenList.threshold);
+        let vegaPutData: any = {
+            table: []
+        };
+        simulatedPrice.forEach((element: any, index1: string | number) => {
+            let elementPut: number;
+            let putStrikePrice = 3500; // need debounced threshold
+            if (element < putStrikePrice) { // > is for put ie must sell if hits price
+                elementPut = putStrikePrice - element;
+            } else { elementPut = 0 }
+            vegaPutData.table[index1] = {
+                "a": element, // TODO: fix this
+                "b": elementPut,
+                "Data Type": "Put"
+            };
+            // console.log("put data here: ", vegaPutData)
+        });
+        /*   */
+        // END PUT CHART DATA PREP
+
 
         return (
             <Grid container className="token-row">
@@ -240,11 +301,71 @@ const TokenRow = ({
                                     height: "100%",
                                 }}
                             >
-                                <TestChartEmbed
-                                    sip={simulatedPrice}
-                                    spec={"bar2"}
+                                <ScatterETH
+                                    spec={"scatter"}
+                                    inputTable={vegaData}
+                                    tokenName={token.name}
                                 />
                                 {/* bar = colored bar, else coloredline */}
+                            </div>
+                        }
+                    </span>
+                </Grid>
+                <Grid item xs={8}>
+                    <span className="remaining-fields">
+                        {
+                            // TODO which class? fluid issue on mobile?
+                            <div
+                                style={{
+                                    display: "flex",
+                                    width: "100%",
+                                    height: "100%",
+                                }}
+                            >
+                                <ScatterCurrentPrice
+                                    spec={"scatter"}
+                                    inputTable={vegaData}
+                                />
+                            </div>
+                        }
+                    </span>
+                </Grid>
+                <Grid item xs={6}>
+                    <span className="remaining-fields">
+                        {
+                            // TODO which class? fluid issue on mobile?
+                            <div
+                                style={{
+                                    display: "flex",
+                                    width: "100%",
+                                    height: "100%",
+                                }}
+                            >
+                                <HistogramLive
+                                    sip={simulatedPrice}
+                                    currentPrice={token.currentPrice}
+                                    spec={"bar"} // bar or bar mean
+                                />
+                            </div>
+                        }
+                    </span>
+                </Grid>
+                <Grid item xs={10}>
+                    <span className="remaining-fields">
+                        {
+                            // TODO which class? fluid issue on mobile?
+                            <div
+                                style={{
+                                    display: "flex",
+                                    width: "100%",
+                                    height: "100%",
+                                }}
+                            >
+                                <ScatterPut
+                                    spec={"scatter"}
+                                    inputTable={vegaPutData}
+                                    tokenName={token.name}
+                                />
                             </div>
                         }
                     </span>

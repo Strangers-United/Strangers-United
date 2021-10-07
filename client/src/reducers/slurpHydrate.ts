@@ -3,6 +3,7 @@ import hydrateLibrary from '../utils/hydrate'; // Hydrate library for chart rend
 import { ISlurp, slurpList } from "../utils/slurp";
 
 export interface SlurpState {
+    sipOGMetaData: any;
     location: string;
     sips: string[];
     sipMatrices: number[][];
@@ -15,6 +16,17 @@ const initialState = {
                 location: "init state", //init state ipfs
                 sips: ["token1 init", "sip 2 init"],
                 sipMatrices: [[.22, .33, .44], [.55, .66, .77]],
+                sipOGMetaData: {
+                    "count": 30,
+                    "mean": 1.0000067845876177,
+                    "std": 0.0037466926179786837,
+                    "min": 0.9900990099009901,
+                    "P25": 1,
+                    "P50": 1,
+                    "P75": 1,
+                    "max": 1.01,
+                    "density": [999.9999999999998, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 999.9999999999998]
+                }
             };
         })
 };
@@ -37,10 +49,12 @@ export const fetchSlurpLib = createAsyncThunk(
         const slurpIpfsLib = await fetchIpfs(url);
         let sipTrials: number[] = [];
         let sipNames: string[] = [];
+        let sipMetaData: any = {};
         slurpIpfsLib.sips.forEach(async function (sip: any, i: number) {
             sipTrials[i] = await hydrateLibrary(slurpIpfsLib, slurpIpfsLib.sips[i].name, 500);
             sipNames[i] = slurpIpfsLib.sips[i].name;
-            console.log(' in slurpHydrate loop: ', sipTrials);
+            sipMetaData[i] = slurpIpfsLib.sips[i].metadata;
+            console.log(' in slurpHydrate loop: ', sipMetaData);
         });
 
         const allLibs = await Promise.all( // ONLY ONE TODO HERE support multiple libs from ipfs
@@ -48,10 +62,13 @@ export const fetchSlurpLib = createAsyncThunk(
                 //console.log(' in slurpHydrate: ', t);
                 const sips = sipNames;
                 const sipMatrices = sipTrials;
+                const sipOGMetaData = sipMetaData;
+                console.log(' in slurpHydrate: ', sipOGMetaData);
                 return {
                     location: t.location,
                     sips: sips,
                     sipMatrices: sipMatrices,
+                    sipOGMetaData: sipOGMetaData,
                 } as unknown as SlurpState;
             })
         );
@@ -75,6 +92,7 @@ const tokenHydratedMatrixSlice = createSlice({
                         location: data.location,
                         sips: data.sips,
                         sipMatrices: data.sipMatrices,
+                        sipOGMetaData: data.sipOGMetaData,
                     };
                     return e;
                 });

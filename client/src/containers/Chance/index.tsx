@@ -8,7 +8,7 @@ import useMsg from "../../hooks/CustomMessageHook";
 import { useAppDispatch, useAppSelector } from "../../store";
 //import { Sparklines, SparklinesLine } from 'react-sparklines-typescript';
 import { fetchSlurpLib, SlurpState } from "../../reducers/slurpHydrate";
-import TestChartEmbed from "../../components/TestChartEmbed";
+import HistogramLive from "../../components/HistogramLive";
 
 const Chance = () => {
     // ==================================
@@ -52,7 +52,7 @@ const Chance = () => {
         <div>
             <BalanceCardChance />
             {/* <Chart /> */}
-            <TestChartEmbed />
+            <HistogramLive />
         </div>
     );
 };
