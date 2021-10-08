@@ -20,6 +20,7 @@ export interface ITokenBalanceHeader {
     key: keyof TokenState;
     label: string;
     editable: boolean;
+    isChart?: boolean;
 }
 
 export interface ITokenBalanceState {
@@ -55,6 +56,7 @@ const initialState = {
         { key: "usdValue", label: "Value (USD)", editable: false },
         { key: "threshold", label: "Threshold", editable: true },
         { key: "chance", label: "Chance of Hit", editable: false },
+        { key: "chart", label: "Chart", editable: false, isChart: true },
     ],
     state: "fetching" as FETCH_STATE,
     tokenList: (process.env.REACT_APP_ENV === "production"
