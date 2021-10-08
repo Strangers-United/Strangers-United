@@ -69,22 +69,22 @@ export const tokenList = [
         token: "GNO",
         name: "Gnosis",
     },
-    {
-        address: "0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2",
-        rateAddress: "0xec1D1B3b0443256cc3860e24a46F108e699484Aa",
-        decimal: 8,
-        ratePair: "USD",
-        token: "MKR",
-        name: "Maker",
-    },
-    {
-        address: "0x03ab458634910aad20ef5f1c8ee96f1d6ac54919",
-        rateAddress: "0x4ad7B025127e89263242aB68F0f9c4E5C033B489",
-        decimal: 18,
-        ratePair: "ETH",
-        token: "RAI",
-        name: "Rai Reflex Index",
-    },
+    /*  {
+         address: "0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2",
+         rateAddress: "0xec1D1B3b0443256cc3860e24a46F108e699484Aa",
+         decimal: 8,
+         ratePair: "USD",
+         token: "MKR",
+         name: "Maker",
+     },
+     {
+         address: "0x03ab458634910aad20ef5f1c8ee96f1d6ac54919",
+         rateAddress: "0x4ad7B025127e89263242aB68F0f9c4E5C033B489",
+         decimal: 18,
+         ratePair: "ETH",
+         token: "RAI",
+         name: "Rai Reflex Index",
+     }, */
     // {
     //     address: "0x88dF592F8eb5D7Bd38bFeF7dEb0fBc02cf3778a0",
     //     rateAddress: "",
@@ -92,14 +92,14 @@ export const tokenList = [
     //     token: "TRB",
     //     name: "Tellor",
     // },
-    {
-        address: "0xc944e90c64b2c07662a292be6244bdf05cda44a7",
-        rateAddress: "0x86cF33a451dE9dc61a2862FD94FF4ad4Bd65A5d2",
-        decimal: 8,
-        ratePair: "USD",
-        token: "GRT",
-        name: "The Graph",
-    },
+    /*     {
+            address: "0xc944e90c64b2c07662a292be6244bdf05cda44a7",
+            rateAddress: "0x86cF33a451dE9dc61a2862FD94FF4ad4Bd65A5d2",
+            decimal: 8,
+            ratePair: "USD",
+            token: "GRT",
+            name: "The Graph",
+        }, */
     {
         address: "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984",
         rateAddress: "0x553303d460EE0afB37EdFf9bE42922D8FF63220e",

@@ -22,13 +22,13 @@ const Liquidation = (props: ILiquidation) => {
     if (currentTokenValue > props.threshold) {
         const numbTrialsBelow = currentPriceSim.filter((x: number) => x <= props.threshold).length
         console.log("==== currentPriceSim, numbTrialsBelow, #trials, ", currentPriceSim, numbTrialsBelow, props.sip.length);
-        const percent = (numbTrialsBelow / props.sip.length) * 100;
+        const percent = 1 - (numbTrialsBelow / props.sip.length) * 100;
         const newChanceOfHit = percent.toFixed(2);
         return <div>{newChanceOfHit}</div>;
     } else if (currentTokenValue < props.threshold) {
         const numbTrialsBelow = currentPriceSim.filter((x: number) => x >= props.threshold).length
         console.log("==== currentPriceSim, numbTrialsBelow, #trials, ", currentPriceSim, numbTrialsBelow, props.sip.length);
-        const percent = (numbTrialsBelow / props.sip.length) * 100;
+        const percent = 1 - (numbTrialsBelow / props.sip.length) * 100;
         const newChanceOfHit = percent.toFixed(2);
         return <div>{newChanceOfHit}</div>;
     }

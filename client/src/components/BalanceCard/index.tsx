@@ -20,6 +20,7 @@ import ScatterCurrentPrice from "../ScatterCurrentPrice";
 import ScatterETH from "../ScatterETH";
 import ScatterPut from "../ScatterPut";
 import { tokenList } from "../../utils/token";
+import Liquidation from "../Liquidation";
 
 const BalanceCard = () => {
     // ==================================
@@ -292,6 +293,18 @@ const TokenRow = ({
                                     </FormControl>
                                 </Grid>
                             );
+                        } else if (header.isChart) {
+                            return (
+                                <Grid
+                                    key={`token-${header.key}`}
+                                    item
+                                    xs
+                                    className="remaining-fields__cell"
+                                >
+                                    {/* <ChartWrapper token={token} threshold={token.threshold} sip={simulationTrials} /> */}
+                                    <Liquidation token={token} threshold={token.threshold} sip={simulationTrials} />%
+                                </Grid>
+                            );
                         }
                         return (
                             <Grid
@@ -305,7 +318,7 @@ const TokenRow = ({
                         );
                     })}
                 </Grid>
-                <Grid item xs={2}>
+                {/*         <Grid item xs={2}>
                     <span className="remaining-fields">
                         {
                             // TODO which class? fluid issue on mobile?
@@ -321,12 +334,12 @@ const TokenRow = ({
                                     inputTable={vegaData}
                                     tokenName={token.name}
                                 />
-                                {/* bar = colored bar, else coloredline */}
+                                // bar = colored bar, else coloredline //
                             </div>
                         }
                     </span>
-                </Grid>
-                <Grid item xs={3}>
+                </Grid> */}
+                {/*  <Grid item xs={3}>
                     <span className="remaining-fields">
                         {
                             // TODO which class? fluid issue on mobile?
@@ -346,7 +359,7 @@ const TokenRow = ({
                         }
                     </span>
                 </Grid>
-                <Grid item xs={5}>
+            */}   {/*   <Grid item xs={5}>
                     <span className="remaining-fields">
                         {
                             // TODO which class? fluid issue on mobile?
@@ -366,7 +379,7 @@ const TokenRow = ({
                         }
                     </span>
                 </Grid>
-                {/*  <Grid item xs={4}>
+               */}  {/*  <Grid item xs={4}>
                     <span className="remaining-fields">
                         {
                             // TODO which class? fluid issue on mobile?

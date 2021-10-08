@@ -76,7 +76,7 @@ const HistogramLive = (props: any) => {
             }
             ],
             "mark": {
-                "type": "bar", "tooltip": true,
+                "type": "bar", "tooltip": false,
                 "line": { "color": "darkgreen" },
             },
             "encoding": {

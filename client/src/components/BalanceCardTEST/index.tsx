@@ -271,7 +271,7 @@ const TokenRow = ({
                                     className="remaining-fields__cell"
                                 >
                                     {/* <ChartWrapper token={token} threshold={token.threshold} sip={simulationTrials} /> */}
-                                    <Liquidation token={token} threshold={token.threshold} sip={simulationTrials} />
+                                    <Liquidation token={token} threshold={token.threshold} sip={simulationTrials} />%
                                 </Grid>
                             );
                         }

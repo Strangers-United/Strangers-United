@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 const Ipfs = () => {
     const [text, setText] = useState("");
     const [url, setUrl] = useState(
-        "https://ipfs.io/ipfs/QmTn16U9YtbMeGkYWtRFZ5XrNA7tiKQYyRSgX4Es3TWouB"
+        "https://gateway.pinata.cloud/ipfs/QmdrD1KPCeem4pWA8jrT3oUm3Fpv5TXxubJEPdS69B8LmR"
     );
     const [data, setData] = useState("");
 
