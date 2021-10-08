@@ -2,6 +2,7 @@
 import argparse
 import json
 from datetime import datetime, timedelta
+from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -9,15 +10,10 @@ import pandas as pd
 import requests
 from dateutil.relativedelta import *
 from pycoingecko import CoinGeckoAPI
+from tqdm import tqdm
 
-# from PySIP3library import Json
 
-
-def get_historical_data(token, api_key, end_date):
-    end_date_dt = datetime.strptime(end_date, "%Y-%m-%d").date()
-    start_date_dt = end_date_dt - timedelta(days=364)
-    start_date = start_date_dt.strftime("%Y-%m-%d")
-    print(f"start date: {start_date}, end date: {end_date}")
+def get_token_data(token, api_key, end_date, start_date, put_date_info=True):
     params = {
         "format": "csv",
         "key": api_key,
@@ -25,45 +21,101 @@ def get_historical_data(token, api_key, end_date):
         "to": end_date,
     }
     url = f"https://api.covalenthq.com/v1/pricing/historical/usd/{token}/"
-    print(f"The url is: {url}")  # Print the url
     data_history_response = requests.get(url=url, params=params)
     data_history_response = data_history_response.text.split('\n')
+    if len(data_history_response) < 365:
+        print(f'Exclude {token} token, because of unavailability of its data!')
+        return None
+
     data_history_response = data_history_response[:-1] # remove the last item (it's empty)
     headers = data_history_response[0]
     data_history_response = data_history_response[1:] # remove the header
-    print(f"The length of the received data is: {len(data_history_response)}")  # Print the url
-    data_history_response = [[x.split(',')[0].strip('"'), x.split(',')[1].strip('"'), x.split(',')[3].strip('"'), x.split(',')[4].strip('"')] for x in data_history_response] # remove redundant double quote
+    if put_date_info:
+        date_info = [[x.split(',')[0].strip('"'), x.split(',')[1].strip('"'), None] for x in data_history_response] # remove redundant double quote
+    else:
+        date_info = [[x.split(',')[1].strip('"'), None] for x in data_history_response] # remove redundant double quote
+
+    return date_info
+
+
+def get_historical_data(token, api_key, end_date, window):
+    end_date_dt = datetime.strptime(end_date, "%Y-%m-%d").date()
+    start_date_dt = end_date_dt - timedelta(days=window)
+    start_date = start_date_dt.strftime("%Y-%m-%d")
+    print(f"start date: {start_date}, end date: {end_date}")
+    data_history_response = get_token_data(token, api_key, end_date, start_date)
     new_headers = ["Date", "Price", "Token", "Symbol"]
     df = pd.DataFrame(data_history_response, columns=new_headers)
+    print(f"The length of the received data is: {len(data_history_response)}")  # Print the url
     print(f"Just show the head of dataframe:\n{df.head()}")
     
     return df
 
 
-def main(args):
-    NOW = datetime.now()
-    today = NOW.date()
+def get_tokens_history(tokens, api_key, end_date, window):
+    end_date_dt = datetime.strptime(end_date, "%Y-%m-%d").date()
+    start_date_dt = end_date_dt - timedelta(days=window)
+    start_date = start_date_dt.strftime("%Y-%m-%d")
+    print(f"start date: {start_date}, end date: {end_date}, window: {window}")
+    excluded_tokens = []
+    headers = ["date"]
+    data = []
+    for idx, token in enumerate(tqdm(tokens)):
+        data_history = get_token_data(token, api_key, end_date, start_date, True if idx == 0 else False)
+        if data_history is None:
+            excluded_tokens.append(token)
+            continue
 
-    # Setting up the API
-    #tokens = cg.get_coins_list()
-    # print(tokens)
-    # Pick upto 5 tokens
-    #tokens = [token1Name]
-    # tokens = ['bitcoin','ethereum','solana','filecoin','flow']
+        if idx == 0:
+            data = data_history
+        else:
+            data = [a + b for a, b in zip(data, data_history)]
+
+        headers += [token, token + "_chance"]
+
+    df = pd.DataFrame(data, columns=headers)
+    tokens = [token for token in tokens if token not in excluded_tokens]
+
+    for i in range(df.index.size):
+        if not i:
+            continue
+
+        for token in tokens:
+            df[token + "_chance"].iloc[i] = str(float(df[token].iloc[i]) / float(df[token].iloc[i-1]))
+            # df.iloc[i, df.columns.get_loc(token + "_chance")] = str(float(df.iloc[i, df.columns.get_loc(token)]) / float(df.iloc[i-1, df.columns.get_loc(token)]))
+
+    df.drop(0, inplace=True)
+
+    return df
+
+
+def main(args):
     tokens = args.tokens
     chain = args.chain
     api_key = args.api_key
-    """
-        ####################
-        # get historical data
-        #####################
-    """
-    get_historical_data("eth", api_key, end_date="2021-10-06")
+    window = args.window
+    end_date = args.end_date
+    result_dir = Path(args.result_dir)
+    result_dir.mkdir(exist_ok=True)
 
+    NOW = datetime.now()
+    today_date = NOW.date()
+    today_time_str = NOW.strftime("%H-%M-%S")
+    print('time:', today_time_str)
+    # get_historical_data("eth", api_key, end_date=end_date)
+    data_df = get_tokens_history(tokens, api_key, end_date, window)
+    file_name = result_dir / "result.csv"
+    if file_name.is_file():
+        file_name.unlink()
+
+    data_df.to_csv(file_name, sep='\t', encoding='utf-8')
+
+
+"""
     nakedFileName = '-'.join(str(e) for e in tokens)
     # Setup - Pick timeframe (1, 7, 30, 365)
     timeFrame = 30
-    outputFileName = nakedFileName + str('-') + str(today)
+    outputFileName = nakedFileName + str('-') + str(today_date)
     outputFileNameJson = outputFileName + '.json'
     outputFileNamePng = nakedFileName + '.png'
     # Global Variables and initalize
@@ -136,7 +188,7 @@ def main(args):
     a_file = open(outputFileNameJson, "w")
     json.dump(json_object, a_file)
     a_file.close()
-
+"""
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
@@ -149,8 +201,17 @@ if __name__ == "__main__":
                         default="ckey_1cb57deb6a9948sdfasdf05ad3497ff188",
                         help="your api key on Covalent")
     parser.add_argument("--tokens",
-                        default=['flow', 'theta-token',
-                                 'axie-infinity', 'chiliz', 'enjincoin'],
+                        default= ['eth', 'aave', 'bal', 'link', 'crv', 'dai', 'gno', 'mke', 'rai', 'grt', 'uni', 'yfi'],
                         help="list of tokens")
+    parser.add_argument("--result_dir",
+                        default="./result",
+                        help="the result directory path")
+    parser.add_argument("--end_date",
+                        default="2021-10-06",
+                        help="end date of history data")
+    parser.add_argument("--window",
+                        default=365,
+                        help="the length of hisotry data to fetch")
+
     args = parser.parse_args()
     main(args)

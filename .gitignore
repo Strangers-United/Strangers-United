@@ -8,6 +8,7 @@
 .OOFenv
 /node_modules
 yarn.lock
+/data-prep/result
 
 ### Python ###
 # Byte-compiled / optimized / DLL files
