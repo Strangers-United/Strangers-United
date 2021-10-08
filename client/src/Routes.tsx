@@ -1,6 +1,7 @@
 import React from "react";
 import { Switch, Route } from "react-router-dom";
 import Home from "./containers/Home";
+import OOF from "./containers/OOF";
 import Ipfs from "./containers/IPFS";
 import Chance from "./containers/Chance";
 
@@ -14,8 +15,13 @@ export interface IRoute {
 export const routeArr = [
     { path: "/", exact: true, component: Home, name: "Dashboard" },
     { path: "/ipfs", exact: true, component: Ipfs, name: "Ipfs" },
+    {
+        path: "/oof",
+        exact: true,
+        component: OOF,
+        name: "Open Oracle Framework",
+    },
     { path: "/chance", exact: true, component: Chance, name: "Chance of XYZ" },
-
 ] as IRoute[];
 
 const Routes = () => {
