@@ -12,6 +12,7 @@ import "./styles.scss";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import { useWeb3React } from "@web3-react/core";
 import Loading from "../Loading";
+import ChartWrapper from "../ChartWrapper";
 
 const BalanceCard = () => {
     // ==================================
@@ -163,6 +164,17 @@ const TokenRow = ({
                                             }}
                                         />
                                     </FormControl>
+                                </Grid>
+                            );
+                        } else if (header.isChart) {
+                            return (
+                                <Grid
+                                    key={`token-${header.key}`}
+                                    item
+                                    xs
+                                    className="remaining-fields__cell"
+                                >
+                                    <ChartWrapper threshold={token.threshold} />
                                 </Grid>
                             );
                         }
