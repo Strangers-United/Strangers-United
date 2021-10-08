@@ -77,7 +77,10 @@ const ScatterPut = (props: any) => {
         <>
             {tokenList.map((token: TokenState, index) => {
                 return (
-                    <div key={token.address}>{token.threshold}</div>
+                    <>
+                        {/*  <div key={token.address}>{token.threshold}</div>
+                    <Vega spec={useThisChartSpec} data={vegaData} /> */}
+                    </>
                 )
             })}
         </>

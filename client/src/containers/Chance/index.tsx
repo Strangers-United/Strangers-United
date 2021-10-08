@@ -82,9 +82,9 @@ const Chance = () => {
 
     return (
         <div>
-            {/* <BalanceCardTEST />  */}
+            <BalanceCardTEST />
             {/* <Chart /> */}
-            {tokenFetchState === "fetched" ? (
+            {/*             {tokenFetchState === "fetched" ? (
                 <>
                     {tokenList.map((token: TokenState, index) => {
                         // return (
@@ -100,7 +100,7 @@ const Chance = () => {
                     sip={sipList[0].sipMatrices[0]}
                     currentPrice={1}
                     spec={"bar"} // bar or bar mean
-                /></>
+                /></> */}
         </div >
     );
 };

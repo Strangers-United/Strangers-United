@@ -20,6 +20,8 @@ import ScatterCurrentPrice from "../ScatterCurrentPrice";
 import ScatterETH from "../ScatterETH";
 import ScatterPut from "../ScatterPut";
 import { tokenList } from "../../utils/token";
+// import ChartWrapper from "../ChartWrapper";
+import Liquidation from "../Liquidation";
 
 const BalanceCardTEST = () => {
     // ==================================
@@ -258,6 +260,18 @@ const TokenRow = ({
                                             }}
                                         />
                                     </FormControl>
+                                </Grid>
+                            );
+                        } else if (header.isChart) {
+                            return (
+                                <Grid
+                                    key={`token-${header.key}`}
+                                    item
+                                    xs
+                                    className="remaining-fields__cell"
+                                >
+                                    {/* <ChartWrapper token={token} threshold={token.threshold} sip={simulationTrials} /> */}
+                                    <Liquidation token={token} threshold={token.threshold} sip={simulationTrials} />
                                 </Grid>
                             );
                         }
