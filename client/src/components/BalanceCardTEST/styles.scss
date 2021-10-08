@@ -1,0 +1,51 @@
+@import '../../index.scss';
+.balance-card {
+    .token-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.8em;
+        .symbol {
+            font-weight: 700;
+        }
+        &__textfield {
+            color: #FFF;
+        }
+        &__input {
+            text-align: right;
+        }
+        &__focused {
+            border-color: red;
+        }
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    }
+
+    .token-row-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1em;
+        .symbol {
+            font-weight: 100;
+            color: $dark-white;
+        }
+    }
+
+    .remaining-fields {
+        &__header {
+            font-weight: 100;
+            color: $dark-white;
+            margin: 0;
+        }
+        &__cell {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+    }
+
+}

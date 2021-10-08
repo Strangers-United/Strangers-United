@@ -1,43 +1,74 @@
 import { useWeb3React } from "@web3-react/core";
 import React, { ReactElement, useEffect, useState } from "react";
 import { Vega } from 'react-vega';
-import BalanceCardChance from "../../components/BalanceCardChance";
+import BalanceCardTEST from "../../components/BalanceCardTEST";
 import Chart from "../../components/Chart";
 import useMsg from "../../hooks/CustomMessageHook";
+import Loading from "../../components/Loading";
+
 //import Histogram from "../../components/Histogram";
 import { useAppDispatch, useAppSelector } from "../../store";
 //import { Sparklines, SparklinesLine } from 'react-sparklines-typescript';
 import { fetchSlurpLib, SlurpState } from "../../reducers/slurpHydrate";
+import {
+    fetchTokenBalance,
+    TokenState,
+    ITokenBalanceHeader,
+    updateThreshold,
+    triggerThreshold,
+} from "../../reducers/tokenBalance";
 import HistogramLive from "../../components/HistogramLive";
-
+import ScatterPut from "../../components/ScatterPut";
 const Chance = () => {
     // ==================================
     // STATE
     // ==================================
-    const { account, active } = useWeb3React();
-    const { setMsg } = useMsg();
-    const handleHover = (...args: any) => {
-        console.log(args);
-    };
+    const { account } = useWeb3React();
     const dispatch = useAppDispatch();
+    const {
+        state: tokenFetchState,
+        tokenList,
+        headers,
+    } = useAppSelector((state) => state.tokenList);
 
     const sipList = useAppSelector((state) => state.slurpList.slurpList);
+    function sumArrays(arrays) {
+        const n = arrays.reduce((max, xs) => Math.max(max, xs.length), 0);
+        const result = Array.from({ length: n });
+        return result.map((_, i) => arrays.map(xs => xs[i] || 0).reduce((sum, x) => sum + x, 0));
+    }
+
+    const portfolioSummary = sumArrays(sipList[0].sipMatrices);
+    console.log('portfolio summary ', portfolioSummary);
 
     // ==================================
     // INIT
     // ==================================
     useEffect(() => {
-        getTokenSipMathLib();
-    }, []);
+        if (account) {
+            getTokenBalance(account);
+            getTokenSipMathLib();
+            //  setLatestThreshold(tokenList[0].threshold);
+            //  lastestThreshold(tokenList[0].threshold);
+        }
+    }, [account]);
+
 
     // ==================================
     // LISTENER
     // ==================================
-    const signalListeners = { tooltip: handleHover };
+    // /const signalListeners = { tooltip: handleHover };
 
     // ==================================
     // FUNCTIONS
     // ==================================
+    const getTokenBalance = (accountAddress: string) => {
+        try {
+            dispatch(fetchTokenBalance(accountAddress));
+        } catch (err) {
+            console.log(err);
+        }
+    };
     const getTokenSipMathLib = async () => {
         try {
             dispatch(fetchSlurpLib());
@@ -48,12 +79,29 @@ const Chance = () => {
     // ==================================
     // RENDER
     // ==================================
+
     return (
         <div>
-            <BalanceCardChance />
+            {/* <BalanceCardTEST />  */}
             {/* <Chart /> */}
-            <HistogramLive />
-        </div>
+            {tokenFetchState === "fetched" ? (
+                <>
+                    {tokenList.map((token: TokenState, index) => {
+                        // return (
+                        console.log(sipList[0].sipMatrices[0]);
+                        //  );
+                    })}
+                </>
+            ) : (
+                <Loading isAnimation />
+            )}
+            <>
+                <HistogramLive
+                    sip={sipList[0].sipMatrices[0]}
+                    currentPrice={1}
+                    spec={"bar"} // bar or bar mean
+                /></>
+        </div >
     );
 };
 
