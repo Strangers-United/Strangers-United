@@ -6,7 +6,10 @@ const ABI = require('./abi/oof.json')
 const {Contract} = require("ethers");
 
 // config go to file later
-const rpc = process.env.RPC
+const network = process.env.NETWORK
+let rpc = ""
+if (network === "production") rpc = process.env.RPC_PRODUCTION
+else rpc = process.env.RPC_LOCAL
 const pk= process.env.PK
 const oofAddress= process.env.OOFAddress
 const sheetapi= process.env.SHEETAPI

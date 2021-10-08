@@ -37,12 +37,8 @@ const OOF = () => {
         setAccount(account);
         setWeb3Instance(web3);
         let oofContractAddress: string = "";
-        if (process.env.REACT_APP_ENV === "production") {
-            oofContractAddress = "";
-        }
-        else {
-            oofContractAddress = "0xB46cE22B337375531F9A44B95F71B6494A1bf766";
-        }
+        if (process.env.REACT_APP_ENV === "production") oofContractAddress = process.env.REACT_APP_OOF_PRODUCTION_CONTRACT_ADDRESS;
+        else oofContractAddress = process.env.REACT_APP_OOF_LOCAL_CONTRACT_ADDRESS;
         const openOracleFramework = new web3.eth.Contract(
             OOFAbi,
             oofContractAddress
