@@ -57,7 +57,7 @@ const initialState = {
         { key: "balance", label: "Balance", editable: false },
         { key: "usdValue", label: "Value (USD)", editable: false },
         { key: "currentPrice", label: "Price", editable: false },
-        { key: "threshold", label: "Liquidation Theshold", editable: true },
+        { key: "threshold", label: "Liquidation Threshold", editable: true },
         { key: "chance", label: "Chance of Hitting", editable: false, isChanceOf: true },
         { key: "chart", label: "Chart", editable: false, isChart: true },
         { key: "scatter", label: "Relation to ETH", editable: false, isScatter: true },

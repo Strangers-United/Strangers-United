@@ -14,7 +14,7 @@ export interface IRoute {
 export const routeArr = [
     { path: "/", exact: true, component: Home, name: "Dashboard" },
     { path: "/ipfs", exact: true, component: Ipfs, name: "Ipfs" },
-    { path: "/chance", exact: true, component: Chance, name: "Chance of XYZ" },
+    { path: "/chance", exact: true, component: Chance, name: "Lab Experiments" },
 
 ] as IRoute[];
 
