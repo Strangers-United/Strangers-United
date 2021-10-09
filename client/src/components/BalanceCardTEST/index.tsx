@@ -35,7 +35,7 @@ const BalanceCardTEST = () => {
         headers,
     } = useAppSelector((state) => state.tokenList);
     const sipList = useAppSelector((state) => state.slurpList.slurpList);
-    console.log('get simulation data here: ', sipList);
+    console.log("get simulation data here: ", sipList);
     const [lastestThreshold, setLatestThreshold] = useState(0);
     // ==================================
     // INIT
@@ -51,16 +51,15 @@ const BalanceCardTEST = () => {
 
     useEffect(() => {
         if (tokenList.length > 0) {
-            console.log('tokenList changed')
+            console.log("tokenList changed");
             // function you want to call
             // lastestThreshold(tokenList[0].threshold);
-            console.log('inside use effect threshold ', tokenList[0].threshold)
+            console.log("inside use effect threshold ", tokenList[0].threshold);
         }
-    }, [tokenList])
+    }, [tokenList]);
     // ==================================
     // LISTENER
     // ==================================
-
 
     // ==================================
     // FUNCTIONS
@@ -91,6 +90,11 @@ const BalanceCardTEST = () => {
                 console.log(err);
             }
         }; */
+
+    const getProperty = (obj: any, index: number) => {
+        return obj[Object.keys(obj)[index]];
+    };
+
     // ==================================
     // RENDER
     // ==================================
@@ -110,18 +114,29 @@ const BalanceCardTEST = () => {
                     <TokenRow isHeader headers={headers} />
                     {tokenList.map((token: TokenState, index) => {
                         return (
-                            <><TokenRow
-                                key={token.address}
-                                headers={headers}
-                                token={token}
-                                isHeader={false}
-                                simulationTrials={sipList[0].sipMatrices[index]}
-                                simulationTrials2={sipList[0].sipMatrices[0]} // TODO let user select? IMPORTANT: this is always ETH
-                                sipMetaData={sipList[0].sipOGMetaData[index]} />
+                            <>
+                                <TokenRow
+                                    key={token.address}
+                                    headers={headers}
+                                    token={token}
+                                    isHeader={false}
+                                    simulationTrials={
+                                        sipList[0].sipMatrices[index]
+                                    }
+                                    simulationTrials2={
+                                        sipList[0].sipMatrices[0]
+                                    } // TODO let user select? IMPORTANT: this is always ETH
+                                    sipMetaData={getProperty(
+                                        sipList[0].sipOGMetaData,
+                                        index
+                                    )}
+                                />
                                 <ScatterPut
                                     spec={"scatter"}
                                     tokenName={token.symbol}
-                                    threshold={token.threshold} /></>
+                                    threshold={token.threshold}
+                                />
+                            </>
                         );
                     })}
                 </>
@@ -191,7 +206,13 @@ const TokenRow = ({
             </Grid>
         );
     } else if (token) {
-        console.log("tokentokentokentokentoken: ", token.name, simulationTrials, token.threshold, sipMetaData,);
+        console.log(
+            "tokentokentokentokentoken: ",
+            token.name,
+            simulationTrials,
+            token.threshold,
+            sipMetaData
+        );
 
         // in context are: currentPrice, threshold, usdValue, chance,balance, symbol, name, address
         // apply % chances in price ie simulationTrials to the current price for each trial
@@ -209,19 +230,21 @@ const TokenRow = ({
 
         // SCATTER PLOT CHART DATA PREP - TODO add current price DOT to this
         let vegaData: any = {
-            table: []
+            table: [],
         };
         simulationTrials.forEach((element: any, index1: string | number) => {
             vegaData.table[index1] = {
-                "a": element, // TODO: fix this
-                "Data Type": "History"
+                a: element, // TODO: fix this
+                "Data Type": "History",
             };
         });
         simulationTrials2.forEach((element: any, index1: string | number) => {
-            vegaData.table[index1].ETH = element // TODO: fix this
+            vegaData.table[index1].ETH = element; // TODO: fix this
         });
         vegaData.table.append = {
-            "Data Type": "Current", "a": 1, "ETH": 1 // TODO updated values needed here, do this in % change land or $?
+            "Data Type": "Current",
+            a: 1,
+            ETH: 1, // TODO updated values needed here, do this in % change land or $?
         };
         console.log("vegaData in BalanceCardTEST: ", vegaData);
         // END CHART DATA PREP
@@ -271,7 +294,12 @@ const TokenRow = ({
                                     className="remaining-fields__cell"
                                 >
                                     {/* <ChartWrapper token={token} threshold={token.threshold} sip={simulationTrials} /> */}
-                                    <Liquidation token={token} threshold={token.threshold} sip={simulationTrials} />%
+                                    <Liquidation
+                                        token={token}
+                                        threshold={token.threshold}
+                                        sip={simulationTrials}
+                                    />
+                                    %
                                 </Grid>
                             );
                         }
@@ -348,7 +376,8 @@ const TokenRow = ({
                         }
                     </span>
                 </Grid>
-             */}    {/*  <Grid item xs={4}>
+             */}{" "}
+                {/*  <Grid item xs={4}>
                     <span className="remaining-fields">
                         {
                             // TODO which class? fluid issue on mobile?

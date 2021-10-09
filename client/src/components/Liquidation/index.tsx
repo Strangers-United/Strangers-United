@@ -16,40 +16,63 @@ const Liquidation = (props: ILiquidation) => {
         // console.log("==== sipList change", sipList);
         // calculation here
     }, [props.threshold, sipList, props.token]);
-    console.log("==== Liquidation render", props.sip, props.token, props.threshold);
+    console.log(
+        "==== Liquidation render",
+        props.sip,
+        props.token,
+        props.threshold
+    );
     const currentTokenValue = props.token.currentPrice * props.token.balance;
-    var currentPriceSim = props.sip.map(x => x * props.token.currentPrice * props.token.balance);
+    var currentPriceSim = props.sip.map(
+        (x: any) => x * props.token.currentPrice * props.token.balance
+    );
 
     // TODO: calculate liquidation ISN'T WORKING
     if (currentTokenValue > props.threshold) {
-        const numbTrialsBelow = currentPriceSim.filter((x: number) => x <= props.threshold).length
-        console.log("==== currentPriceSim, numbTrialsBelow, #trials, ", currentPriceSim, numbTrialsBelow, props.sip.length);
+        const numbTrialsBelow = currentPriceSim.filter(
+            (x: number) => x <= props.threshold
+        ).length;
+        console.log(
+            "==== currentPriceSim, numbTrialsBelow, #trials, ",
+            currentPriceSim,
+            numbTrialsBelow,
+            props.sip.length
+        );
         const percent = (numbTrialsBelow / props.sip.length) * 100;
         const newChanceOfHit = percent.toFixed(2);
-        if (newChanceOfHit === "NaN" || newChanceOfHit === "Infinity" || newChanceOfHit === undefined) {
-            return (
-                <div>
-                    ERROR
-                </div>
-            )
+        if (
+            newChanceOfHit === "NaN" ||
+            newChanceOfHit === "Infinity" ||
+            newChanceOfHit === undefined
+        ) {
+            return <div>ERROR</div>;
         } else {
             return <div>{newChanceOfHit}</div>;
         }
     } else if (currentTokenValue < props.threshold) {
-        const numbTrialsBelow = currentPriceSim.filter((x: number) => x >= props.threshold).length
-        console.log("==== currentPriceSim, numbTrialsBelow, #trials, ", currentPriceSim, numbTrialsBelow, props.sip.length);
+        const numbTrialsBelow = currentPriceSim.filter(
+            (x: number) => x >= props.threshold
+        ).length;
+        console.log(
+            "==== currentPriceSim, numbTrialsBelow, #trials, ",
+            currentPriceSim,
+            numbTrialsBelow,
+            props.sip.length
+        );
         const percent = (numbTrialsBelow / props.sip.length) * 100;
         const newChanceOfHit = percent.toFixed(2);
-        if (newChanceOfHit === "NaN" || newChanceOfHit === "Infinity" || newChanceOfHit === undefined) {
-            return (
-                <div>
-                    ERROR
-                </div>
-            )
+        if (
+            newChanceOfHit === "NaN" ||
+            newChanceOfHit === "Infinity" ||
+            newChanceOfHit === undefined
+        ) {
+            return <div>ERROR</div>;
         } else {
             return <div>{newChanceOfHit}</div>;
         }
     }
+
+    return <div>ERROR</div>;
 };
 
 export default Liquidation;

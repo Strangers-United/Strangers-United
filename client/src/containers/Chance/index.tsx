@@ -1,6 +1,6 @@
 import { useWeb3React } from "@web3-react/core";
 import React, { ReactElement, useEffect, useState } from "react";
-import { Vega } from 'react-vega';
+import { Vega } from "react-vega";
 import BalanceCardTEST from "../../components/BalanceCardTEST";
 
 //import Histogram from "../../components/Histogram";
@@ -29,14 +29,21 @@ const Chance = () => {
     } = useAppSelector((state) => state.tokenList);
 
     const sipList = useAppSelector((state) => state.slurpList.slurpList);
-    function sumArrays(arrays) {
-        const n = arrays.reduce((max, xs) => Math.max(max, xs.length), 0);
+    function sumArrays(arrays: any) {
+        const n = arrays.reduce(
+            (max: any, xs: any) => Math.max(max, xs.length),
+            0
+        );
         const result = Array.from({ length: n });
-        return result.map((_, i) => arrays.map(xs => xs[i] || 0).reduce((sum, x) => sum + x, 0));
+        return result.map((_, i) =>
+            arrays
+                .map((xs: any) => xs[i] || 0)
+                .reduce((sum: any, x: any) => sum + x, 0)
+        );
     }
 
     const portfolioSummary = sumArrays(sipList[0].sipMatrices);
-    console.log('portfolio summary ', portfolioSummary);
+    console.log("portfolio summary ", portfolioSummary);
 
     // ==================================
     // INIT
@@ -49,7 +56,6 @@ const Chance = () => {
             //  lastestThreshold(tokenList[0].threshold);
         }
     }, [account]);
-
 
     // ==================================
     // LISTENER
@@ -98,7 +104,7 @@ const Chance = () => {
                     currentPrice={1}
                     spec={"bar"} // bar or bar mean
                 /></> */}
-        </div >
+        </div>
     );
 };
 

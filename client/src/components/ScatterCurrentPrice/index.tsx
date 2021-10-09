@@ -1,7 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Vega, VegaLite, View } from 'react-vega';
-import { vega, VisualizationSpec } from 'vega-embed';
-
+import React, { useEffect, useRef, useState } from "react";
+import { Vega, VegaLite, View } from "react-vega";
+import { vega, VisualizationSpec } from "vega-embed";
 
 const dataSupplier = () => {
     // TODO Hook this up with the data from the state?? or get from calling component??
@@ -9,8 +8,10 @@ const dataSupplier = () => {
     const y = Math.random();
 
     let data: any;
-    if (x > 0.5) { data = { ETH: y, "Data Type": "History", a: x } } else {
-        data = { ETH: y, "Data Type": "Current", a: x }
+    if (x > 0.5) {
+        data = { ETH: y, "Data Type": "History", a: x };
+    } else {
+        data = { ETH: y, "Data Type": "Current", a: x };
     }
     return data;
 };
@@ -19,79 +20,85 @@ const ScatterComboChart = (props: any) => {
     const [view, setView] = useState<View>();
 
     //const sipList = useAppSelector((state) => state.slurpList.slurpList);
-    console.log('Use this in test embed ', props.inputTable);
+    console.log("Use this in test embed ", props.inputTable);
 
     let vegaData: any = props.inputTable;
-    console.log('Use this vegaData.table for chart ', vegaData.table);
+    console.log("Use this vegaData.table for chart ", vegaData.table);
 
     useEffect(() => {
         function updateGraph() {
             const data = dataSupplier();
-            console.log('Use this data for chart ', data);
-            const cs = vega
-                .changeset()
-                .insert(data)
-                .remove(null)
+            console.log("Use this data for chart ", data);
+            const cs = vega.changeset().insert(data).remove(null);
 
-            view.change('data', cs).run();
+            if (view) {
+                view.change("data", cs).run();
+            }
         }
 
         if (view) {
             updateGraph();
-            const interval: number = setInterval(updateGraph, 11110);
+            const interval = setInterval(updateGraph, 11110);
             return () => clearInterval(interval);
         }
     }, [view]);
 
     const spec: VisualizationSpec = {
-        "background": null,
-        "config": {
-            "axis": {
-                "labelColor": "#ffffff",
-                "tickColor": "#bebec8",
-                "titleColor": "white",
-                "titleFontWeight": "normal",
-                "titleFontSize": 16,
-                "labelFont": "Helvetica",
-                "titleFont": "Helvetica",
-
+        background: undefined,
+        config: {
+            axis: {
+                labelColor: "#ffffff",
+                tickColor: "#bebec8",
+                titleColor: "white",
+                titleFontWeight: "normal",
+                titleFontSize: 16,
+                labelFont: "Helvetica",
+                titleFont: "Helvetica",
             },
-            "view": {
-                "strokeWidth": 0
-            }
+            view: {
+                strokeWidth: 0,
+            },
         },
-        "data": {
-            "name": "data"
-        }, "mark": { "type": "point" },
-        "encoding": {
-            "x": {
-                "field": "ETH", "type": "quantitative", "scale": { "zero": false }
+        data: {
+            name: "data",
+        },
+        mark: { type: "point" },
+        encoding: {
+            x: {
+                field: "ETH",
+                type: "quantitative",
+                scale: { zero: false },
             },
-            "y": {
-                "field": "a", "type": "quantitative", "scale": { "zero": false }
+            y: {
+                field: "a",
+                type: "quantitative",
+                scale: { zero: false },
             },
-            "color": { "field": "Data Type", "type": "nominal", "scale": { "range": ["#ff0000", "#00ff00", "#0000ff"] } },
-            "shape": { "field": "Data Type", "type": "nominal" }
-
-        }
-    }
+            color: {
+                field: "Data Type",
+                type: "nominal",
+                scale: { range: ["#ff0000", "#00ff00", "#0000ff"] },
+            },
+            shape: { field: "Data Type", type: "nominal" },
+        },
+    };
     let charSpec = props.spec;
-    let useThisChartSpec = charSpec === "scatter" ? spec : specScatterCombo;
+    // let useThisChartSpec = charSpec === "scatter" ? spec : specScatterCombo;
     // let useThisChartSpec = specScatterCombo;
-    console.log('Use this in charSpec spec ', charSpec); // shoudl be specBar
+    console.log("Use this in charSpec spec ", charSpec); // shoudl be specBar
 
     return (
         <>
-            <div className="Demo" >
+            <div className="Demo">
                 <VegaLite
                     spec={spec}
                     actions={false}
-                    renderer={'svg'}
+                    renderer={"svg"}
                     onNewView={(view) => setView(view)}
                 />
             </div>
         </>
     );
-}
+};
 
 export default ScatterComboChart;
