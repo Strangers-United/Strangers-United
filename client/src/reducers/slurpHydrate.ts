@@ -54,7 +54,7 @@ export const fetchSlurpLib = createAsyncThunk(
             sipTrials[i] = await hydrateLibrary(slurpIpfsLib, slurpIpfsLib.sips[i].name, 500);
             sipNames[i] = slurpIpfsLib.sips[i].name;
             sipMetaData[i] = slurpIpfsLib.sips[i].metadata;
-            console.log(' in slurpHydrate loop: ', sipMetaData);
+            //   console.log(' in slurpHydrate loop: ', sipMetaData);
         });
 
         const allLibs = await Promise.all( // ONLY ONE TODO HERE support multiple libs from ipfs
@@ -63,7 +63,7 @@ export const fetchSlurpLib = createAsyncThunk(
                 const sips = sipNames;
                 const sipMatrices = sipTrials;
                 const sipOGMetaData = sipMetaData;
-                console.log(' in slurpHydrate: ', sipOGMetaData);
+                //   console.log(' in slurpHydrate: ', sipOGMetaData);
                 return {
                     location: t.location,
                     sips: sips,

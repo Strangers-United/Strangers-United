@@ -15,7 +15,7 @@ const ChartWrapper = (props: IChartWrapper) => {
         // console.log("==== sipList change", sipList);
         // calculation here
     }, [props.threshold, sipList, props.token]);
-    console.log("==== ChartWrapper render", props.sip, props.token, props.threshold);
+    //console.log("==== ChartWrapper render", props.sip, props.token, props.threshold);
 
     return <HistogramLive
         sip={props.sip}

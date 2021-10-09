@@ -85,7 +85,7 @@ const Chance = () => {
 
     return (
         <div>
-            <BalanceCardTEST />
+            {/* <BalanceCardTEST /> */}
             {/* <Chart /> */}
             {/*             {tokenFetchState === "fetched" ? (
                 <>
@@ -98,12 +98,13 @@ const Chance = () => {
             ) : (
                 <Loading isAnimation />
             )}
-            <>
-                <HistogramLive
-                    sip={sipList[0].sipMatrices[0]}
-                    currentPrice={1}
-                    spec={"bar"} // bar or bar mean
-                /></> */}
+            <>*/}
+            <HistogramLive
+                sip={sipList[0].sipMatrices[0]}
+                currentPrice={1}
+                spec={"bar"} // bar or bar mean
+            />
+
         </div>
     );
 };

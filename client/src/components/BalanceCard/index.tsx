@@ -32,7 +32,7 @@ const BalanceCard = () => {
         headers,
     } = useAppSelector((state) => state.tokenList);
     const sipList = useAppSelector((state) => state.slurpList.slurpList);
-    console.log("get simulation data here: ", sipList);
+    //console.log("get simulation data here: ", sipList);
     const [lastestThreshold, setLatestThreshold] = useState(0);
     // ==================================
     // INIT
@@ -46,8 +46,8 @@ const BalanceCard = () => {
 
     useEffect(() => {
         if (tokenList.length > 0) {
-            console.log("tokenList changed");
-            console.log("inside use effect threshold", tokenList[0].threshold);
+            //    console.log("tokenList changed");
+            //  console.log("inside use effect threshold", tokenList[0].threshold);
         }
     }, [tokenList]);
     // ==================================
@@ -190,18 +190,18 @@ const TokenRow = ({
             </Grid>
         );
     } else if (token) {
-        console.log(
-            "tokentokentokentokentoken: ",
-            token.name,
-            simulationTrials,
-            token.threshold,
-            sipMetaData
-        );
+        /*    console.log(
+                 "tokentokentokentokentoken: ",
+                token.name,
+                simulationTrials,
+                token.threshold,
+                sipMetaData
+            ); */
         // Generic data prep
         const simulatedPrice = simulationTrials.map(
             (x: number) => x * token.currentPrice
         );
-        console.log("simulated price: ", simulatedPrice);
+        //   console.log("simulated price: ", simulatedPrice);
         // END Generic data prep
 
         // SAVE and move to PutWrapper - PUT CHART DATA PREP

@@ -16,7 +16,7 @@ const ScatterWrapper = (props: IScatterWrapper) => {
         // console.log("==== sipList change", sipList);
         // calculation here
     }, [sipList]);
-    console.log("==== ScatterWrapper render", props);
+    //console.log("==== ScatterWrapper render", props);
     // SCATTER PLOT CHART DATA PREP - TODO add current price DOT to layer in
     // DANGER Decided to just use the scatter against ETH for now ALWAYS first token in list
     let vegaData: any = {
@@ -34,7 +34,7 @@ const ScatterWrapper = (props: IScatterWrapper) => {
     vegaData.table.append = {
         "Data Type": "Current", "a": 1, "ETH": 1 // TODO updated values needed here, do this in % change land or $?
     };
-    console.log("vegaData in scatterWrapper: ", vegaData);
+    //console.log("vegaData in scatterWrapper: ", vegaData);
 
     return <ScatterETH
         spec={"scatter"}

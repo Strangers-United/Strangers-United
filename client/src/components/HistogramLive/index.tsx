@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from "../../store";
 /* Example https://vega.github.io/vega-lite/examples/bar.html */
 const HistogramLive = (props: any) => {
     //const sipList = useAppSelector((state) => state.slurpList.slurpList);
-    console.log('Use this in props in embed ', props);
+    //console.log('Use this in props in embed ', props);
     if (!props.sip) {
         return <div></div>; // no data TODO: hack for initial state of sipList is empty crying face
     }
@@ -21,7 +21,7 @@ const HistogramLive = (props: any) => {
     const sum = props.sip.reduce((a: any, b: any) => a + b, 0);
     const avg = (sum / props.sip.length) || 0;
 
-    console.log('average ', avg);
+    //console.log('average ', avg);
     if (props.currentPrice < avg) { currentPriceColor = "red" }
     else { currentPriceColor = "green" }
 

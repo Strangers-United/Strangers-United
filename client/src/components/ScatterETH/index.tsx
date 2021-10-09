@@ -18,8 +18,8 @@ const ScatterETH = (props: any) => {
     //console.log('Use this in textChar props ', props);
 
     vegaData = props.inputTable;
-    console.log('Use this vegaData.table for chart ', vegaData);
-    console.log('token name for a/y axis ', props.tokenName);
+    //console.log('Use this vegaData.table for chart ', vegaData);
+    //console.log('token name for a/y axis ', props.tokenName);
     const specScatterETH: any = {
         "background": null,
         "config": {

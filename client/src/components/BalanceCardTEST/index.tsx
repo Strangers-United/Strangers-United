@@ -35,7 +35,7 @@ const BalanceCardTEST = () => {
         headers,
     } = useAppSelector((state) => state.tokenList);
     const sipList = useAppSelector((state) => state.slurpList.slurpList);
-    console.log("get simulation data here: ", sipList);
+    //console.log("get simulation data here: ", sipList);
     const [lastestThreshold, setLatestThreshold] = useState(0);
     // ==================================
     // INIT
@@ -51,10 +51,10 @@ const BalanceCardTEST = () => {
 
     useEffect(() => {
         if (tokenList.length > 0) {
-            console.log("tokenList changed");
+            // console.log("tokenList changed");
             // function you want to call
             // lastestThreshold(tokenList[0].threshold);
-            console.log("inside use effect threshold ", tokenList[0].threshold);
+            //  console.log("inside use effect threshold ", tokenList[0].threshold);
         }
     }, [tokenList]);
     // ==================================
@@ -206,13 +206,13 @@ const TokenRow = ({
             </Grid>
         );
     } else if (token) {
-        console.log(
-            "tokentokentokentokentoken: ",
-            token.name,
-            simulationTrials,
-            token.threshold,
-            sipMetaData
-        );
+        /*        console.log(
+                   "tokentokentokentokentoken: ",
+                   token.name,
+                   simulationTrials,
+                   token.threshold,
+                   sipMetaData
+               ); */
 
         // in context are: currentPrice, threshold, usdValue, chance,balance, symbol, name, address
         // apply % chances in price ie simulationTrials to the current price for each trial
@@ -246,7 +246,7 @@ const TokenRow = ({
             a: 1,
             ETH: 1, // TODO updated values needed here, do this in % change land or $?
         };
-        console.log("vegaData in BalanceCardTEST: ", vegaData);
+        // console.log("vegaData in BalanceCardTEST: ", vegaData);
         // END CHART DATA PREP
 
         return (
