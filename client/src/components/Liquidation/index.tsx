@@ -9,6 +9,7 @@ interface ILiquidation {
 
 const Liquidation = (props: ILiquidation) => {
     const sipList = useAppSelector((state) => state.slurpList.slurpList);
+    //TODO SIP or siplist f me
 
     useEffect(() => {
         // console.log("==== threshold change", props.threshold);
@@ -19,18 +20,35 @@ const Liquidation = (props: ILiquidation) => {
     const currentTokenValue = props.token.currentPrice * props.token.balance;
     var currentPriceSim = props.sip.map(x => x * props.token.currentPrice * props.token.balance);
 
+    // TODO: calculate liquidation ISN'T WORKING
     if (currentTokenValue > props.threshold) {
         const numbTrialsBelow = currentPriceSim.filter((x: number) => x <= props.threshold).length
         console.log("==== currentPriceSim, numbTrialsBelow, #trials, ", currentPriceSim, numbTrialsBelow, props.sip.length);
-        const percent = 1 - (numbTrialsBelow / props.sip.length) * 100;
+        const percent = (numbTrialsBelow / props.sip.length) * 100;
         const newChanceOfHit = percent.toFixed(2);
-        return <div>{newChanceOfHit}</div>;
+        if (newChanceOfHit === "NaN" || newChanceOfHit === "Infinity" || newChanceOfHit === undefined) {
+            return (
+                <div>
+                    ERROR
+                </div>
+            )
+        } else {
+            return <div>{newChanceOfHit}</div>;
+        }
     } else if (currentTokenValue < props.threshold) {
         const numbTrialsBelow = currentPriceSim.filter((x: number) => x >= props.threshold).length
         console.log("==== currentPriceSim, numbTrialsBelow, #trials, ", currentPriceSim, numbTrialsBelow, props.sip.length);
-        const percent = 1 - (numbTrialsBelow / props.sip.length) * 100;
+        const percent = (numbTrialsBelow / props.sip.length) * 100;
         const newChanceOfHit = percent.toFixed(2);
-        return <div>{newChanceOfHit}</div>;
+        if (newChanceOfHit === "NaN" || newChanceOfHit === "Infinity" || newChanceOfHit === undefined) {
+            return (
+                <div>
+                    ERROR
+                </div>
+            )
+        } else {
+            return <div>{newChanceOfHit}</div>;
+        }
     }
 };
 

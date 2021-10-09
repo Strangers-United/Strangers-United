@@ -21,6 +21,8 @@ import ScatterETH from "../ScatterETH";
 import ScatterPut from "../ScatterPut";
 import { tokenList } from "../../utils/token";
 import Liquidation from "../Liquidation";
+import ChartWrapper from "../ChartWrapper";
+import ScatterWrapper from "../ScatterWrapper";
 
 const BalanceCard = () => {
     // ==================================
@@ -216,23 +218,7 @@ const TokenRow = ({
         console.log("chanceOut: ", chanceOut);
         console.log("simulationTrials2: ", simulationTrials2);
 
-        // SCATTER PLOT CHART DATA PREP - TODO add current price DOT to this
-        let vegaData: any = {
-            table: []
-        };
-        simulationTrials.forEach((element: any, index1: string | number) => {
-            vegaData.table[index1] = {
-                "a": element, // TODO: fix this
-                "Data Type": "History"
-            };
-        });
-        simulationTrials2.forEach((element: any, index1: string | number) => {
-            vegaData.table[index1].ETH = element // TODO: fix this
-        });
-        vegaData.table.append = {
-            "Data Type": "Current", "a": 1, "ETH": 1 // TODO updated values needed here, do this in % change land or $?
-        };
-        console.log("vegaData in balanceCard: ", vegaData);
+
         // END CHART DATA PREP
 
         // PUT CHART DATA PREP
@@ -293,7 +279,7 @@ const TokenRow = ({
                                     </FormControl>
                                 </Grid>
                             );
-                        } else if (header.isChart) {
+                        } else if (header.isChanceOf) {
                             return (
                                 <Grid
                                     key={`token-${header.key}`}
@@ -301,8 +287,36 @@ const TokenRow = ({
                                     xs
                                     className="remaining-fields__cell"
                                 >
-                                    {/* <ChartWrapper token={token} threshold={token.threshold} sip={simulationTrials} /> */}
                                     <Liquidation token={token} threshold={token.threshold} sip={simulationTrials} />%
+                                </Grid>
+                            );
+                        }
+                        else if (header.isChart) {
+                            return (
+                                <Grid
+                                    key={`token-${header.key}`}
+                                    item
+                                    xs
+                                    className="remaining-fields__cell"
+                                >
+                                    <ChartWrapper token={token} threshold={token.threshold} sip={simulatedPrice} />
+                                </Grid>
+                            );
+                        }
+
+                        else if (header.isScatter) {
+                            return (
+                                <Grid
+                                    key={`token-${header.key}`}
+                                    item
+                                    xs
+                                    className="remaining-fields__cell"
+                                >
+                                    <ScatterWrapper
+                                        spec={"scatter"}
+                                        sip={simulationTrials}
+                                        tokenName={token.name}
+                                    />
                                 </Grid>
                             );
                         }

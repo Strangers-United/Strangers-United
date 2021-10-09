@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useAppSelector } from "../../store";
-
+import HistogramLive from "../HistogramLive";
 interface IChartWrapper {
     threshold: number;
     token: any;
@@ -17,7 +17,11 @@ const ChartWrapper = (props: IChartWrapper) => {
     }, [props.threshold, sipList, props.token]);
     console.log("==== ChartWrapper render", props.sip, props.token, props.threshold);
 
-    return <div>{"chart goes here"}</div>;
+    return <HistogramLive
+        sip={props.sip}
+        currentPrice={props.token.currentPrice}
+        spec={"bar"} // bar or bar mean
+    />;
 };
 
 export default ChartWrapper;
