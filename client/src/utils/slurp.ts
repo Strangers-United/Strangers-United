@@ -1,6 +1,6 @@
 export const slurpList = [ // This is temp until we have a real libraries we fetch from ipfs via some sort of search
     {
-        location: "https://gateway.pinata.cloud/ipfs/QmdrD1KPCeem4pWA8jrT3oUm3Fpv5TXxubJEPdS69B8LmR",
+        location: "https://gateway.pinata.cloud/ipfs/QmXvEzxJN8np5ghVmpFo1NUDbohiXyV6SRH1vdJLJEa7ng",
         sips: [],
         sipMatrices: [],
         sipOGMetaData: {},

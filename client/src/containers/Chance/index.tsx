@@ -2,9 +2,6 @@ import { useWeb3React } from "@web3-react/core";
 import React, { ReactElement, useEffect, useState } from "react";
 import { Vega } from 'react-vega';
 import BalanceCardTEST from "../../components/BalanceCardTEST";
-import Chart from "../../components/Chart";
-import useMsg from "../../hooks/CustomMessageHook";
-import Loading from "../../components/Loading";
 
 //import Histogram from "../../components/Histogram";
 import { useAppDispatch, useAppSelector } from "../../store";

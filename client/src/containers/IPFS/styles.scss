@@ -1,0 +1,22 @@
+@import '../../index.scss';
+
+// TODO clean up LINK style and input box
+/* unvisited link */
+a:link {
+    color: red;
+}
+
+/* visited link */
+a:visited {
+    color: green;
+}
+
+/* mouse over link */
+a:hover {
+    color: yellow;
+}
+
+/* selected link */
+a:active {
+    color: orange;
+}

@@ -1,10 +1,11 @@
 import { create as ipfsCreate } from "ipfs-http-client";
 import { useEffect, useState } from "react";
+import "./styles.scss";
 
 const Ipfs = () => {
     const [text, setText] = useState("");
     const [url, setUrl] = useState(
-        "https://gateway.pinata.cloud/ipfs/QmdrD1KPCeem4pWA8jrT3oUm3Fpv5TXxubJEPdS69B8LmR"
+        "https://gateway.pinata.cloud/ipfs/QmXvEzxJN8np5ghVmpFo1NUDbohiXyV6SRH1vdJLJEa7ng"
     );
     const [data, setData] = useState("");
 
@@ -41,7 +42,7 @@ const Ipfs = () => {
 
     return (
         <div>
-            <div>Your text {text}</div>
+            <div>Post a chance.json to IFPS...  {text}</div>
             <div>
                 <a href={url}>url : {url}</a>
             </div>
