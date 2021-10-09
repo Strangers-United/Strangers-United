@@ -17,18 +17,19 @@ const ScatterWrapper = (props: IScatterWrapper) => {
         // calculation here
     }, [sipList]);
     console.log("==== ScatterWrapper render", props);
-    // SCATTER PLOT CHART DATA PREP - TODO add current price DOT to this
+    // SCATTER PLOT CHART DATA PREP - TODO add current price DOT to layer in
+    // DANGER Decided to just use the scatter against ETH for now ALWAYS first token in list
     let vegaData: any = {
         table: []
     };
     props.sip.forEach((element: any, index1: string | number) => {
         vegaData.table[index1] = {
-            "a": element, // TODO: fix this
+            "a": element, // hmm a is the same as x? why not call it x?
             "Data Type": "History"
         };
     });
     sipList[0].sipMatrices[0].forEach((element: any, index1: string | number) => {
-        vegaData.table[index1].ETH = element // TODO: fix this
+        vegaData.table[index1].ETH = element // TODO: fix this DANGER
     });
     vegaData.table.append = {
         "Data Type": "Current", "a": 1, "ETH": 1 // TODO updated values needed here, do this in % change land or $?
