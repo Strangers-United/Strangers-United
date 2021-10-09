@@ -5,6 +5,8 @@
         justify-content: space-between;
         align-items: center;
         margin-bottom: 0.8em;
+        width: 200vw;
+
         .symbol {
             font-weight: 700;
         }
@@ -29,23 +31,22 @@
         justify-content: space-between;
         align-items: center;
         margin-bottom: 1em;
+        width: 200vw;
         .symbol {
             font-weight: 100;
             color: $dark-white;
         }
     }
 
+    .remaining-fields-header {
+        font-weight: 100;
+        color: $dark-white;
+        margin: 0;
+    }
     .remaining-fields {
-        &__header {
-            font-weight: 100;
-            color: $dark-white;
-            margin: 0;
-        }
-        &__cell {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-        }
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
     }
 
 }

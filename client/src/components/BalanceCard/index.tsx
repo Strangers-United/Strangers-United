@@ -36,7 +36,7 @@ const BalanceCard = () => {
         headers,
     } = useAppSelector((state) => state.tokenList);
     const sipList = useAppSelector((state) => state.slurpList.slurpList);
-    console.log('get simulation data here: ', sipList);
+    console.log("get simulation data here: ", sipList);
     const [lastestThreshold, setLatestThreshold] = useState(0);
     // ==================================
     // INIT
@@ -52,16 +52,15 @@ const BalanceCard = () => {
 
     useEffect(() => {
         if (tokenList.length > 0) {
-            console.log('tokenList changed')
+            console.log("tokenList changed");
             // function you want to call
             // lastestThreshold(tokenList[0].threshold);
-            console.log('inside use effect threshold', tokenList[0].threshold)
+            console.log("inside use effect threshold", tokenList[0].threshold);
         }
-    }, [tokenList])
+    }, [tokenList]);
     // ==================================
     // LISTENER
     // ==================================
-
 
     // ==================================
     // FUNCTIONS
@@ -107,7 +106,7 @@ const BalanceCard = () => {
             }
         >
             {tokenFetchState === "fetched" ? (
-                <>
+                <div style={{ overflow: "auto" }}>
                     <TokenRow isHeader headers={headers} />
                     {tokenList.map((token: TokenState, index) => {
                         return (
@@ -122,7 +121,7 @@ const BalanceCard = () => {
                             />
                         );
                     })}
-                </>
+                </div>
             ) : (
                 <Loading isAnimation />
             )}
@@ -168,24 +167,34 @@ const TokenRow = ({
 
     if (isHeader) {
         return (
-            <Grid container className="token-row-header">
+            <Grid container className="token-row-header" spacing={2}>
                 <Grid item xs={1}>
                     <span className="symbol">Symbol</span>
                 </Grid>
-                <Grid item container xs={11} className="remaining-fields">
-                    {headers.map((header) => {
+                {headers.map((header) => {
+                    if (header.isChart || header.isScatter) {
                         return (
                             <Grid
                                 key={header.label}
                                 item
-                                xs
-                                className="remaining-fields__header remaining-fields__cell"
+                                xs={3}
+                                className="remaining-fields-header remaining-fields"
                             >
                                 {header.label}
                             </Grid>
                         );
-                    })}
-                </Grid>
+                    }
+                    return (
+                        <Grid
+                            key={header.label}
+                            item
+                            xs={1}
+                            className="remaining-fields-header remaining-fields"
+                        >
+                            {header.label}
+                        </Grid>
+                    );
+                })}
             </Grid>
         );
     } else if (token) {
@@ -194,7 +203,7 @@ const TokenRow = ({
             token.name,
             simulationTrials,
             token.threshold,
-            sipMetaData,
+            sipMetaData
         );
         // console.log('yooooooo ', latestThreshold(tokenlist[0].thershold)); // this doesnt work
 
@@ -203,7 +212,7 @@ const TokenRow = ({
         const simulatedPrice = simulationTrials.map(
             (x: number) => x * token.currentPrice
         );
-        console.log('simulated price: ', simulatedPrice);
+        console.log("simulated price: ", simulatedPrice);
         // this is today's likely price range for charting
         // TODO: let user enter? chanceOperator? for now it is set to < ie risk of going down
         //console.log('token.threshold: ', token.threshold);
@@ -218,120 +227,125 @@ const TokenRow = ({
         console.log("chanceOut: ", chanceOut);
         console.log("simulationTrials2: ", simulationTrials2);
 
-
         // END CHART DATA PREP
 
         // PUT CHART DATA PREP
         // console.log(tokenList.threshold);
         let vegaPutData: any = {
-            table: []
+            table: [],
         };
         simulatedPrice.forEach((element: any, index1: string | number) => {
             let elementPut: number;
             let putStrikePrice = 3500; // need debounced threshold
-            if (element < putStrikePrice) { // > is for put ie must sell if hits price
+            if (element < putStrikePrice) {
+                // > is for put ie must sell if hits price
                 elementPut = putStrikePrice - element;
-            } else { elementPut = 0 }
+            } else {
+                elementPut = 0;
+            }
             vegaPutData.table[index1] = {
-                "a": element, // TODO: fix this
-                "b": elementPut,
-                "Data Type": "Put"
+                a: element, // TODO: fix this
+                b: elementPut,
+                "Data Type": "Put",
             };
             // console.log("put data here: ", vegaPutData)
         });
         /*   */
         // END PUT CHART DATA PREP
 
-
         return (
-            <Grid container className="token-row">
+            <Grid container className="token-row" spacing={2}>
                 <Grid item xs={1}>
                     <span className="symbol">{token.symbol}</span>
                 </Grid>
-                <Grid item container xs={11} className="remaining-fields">
-                    {headers.map((header, index) => {
-                        if (header.editable) {
-                            return (
-                                <Grid
-                                    key={`token-${header.key}`}
-                                    item
-                                    xs
-                                    className="remaining-fields__cell"
-                                >
-                                    <FormControl className="token-row__form-control">
-                                        <OutlinedInput
-                                            value={token[header.key]}
-                                            onChange={(e) => {
-                                                handleInputOnChange(
-                                                    Number(e.target.value)
-                                                );
-                                            }}
-                                            classes={{
-                                                root: "token-row__textfield",
-                                                input: "token-row__input",
-                                                focused: "token-row__focused",
-                                            }}
-                                            inputProps={{
-                                                min: 0,
-                                                type: "number",
-                                            }}
-                                        />
-                                    </FormControl>
-                                </Grid>
-                            );
-                        } else if (header.isChanceOf) {
-                            return (
-                                <Grid
-                                    key={`token-${header.key}`}
-                                    item
-                                    xs
-                                    className="remaining-fields__cell"
-                                >
-                                    <Liquidation token={token} threshold={token.threshold} sip={simulationTrials} />%
-                                </Grid>
-                            );
-                        }
-                        else if (header.isChart) {
-                            return (
-                                <Grid
-                                    key={`token-${header.key}`}
-                                    item
-                                    xs
-                                    className="remaining-fields__cell"
-                                >
-                                    <ChartWrapper token={token} threshold={token.threshold} sip={simulatedPrice} />
-                                </Grid>
-                            );
-                        }
-
-                        else if (header.isScatter) {
-                            return (
-                                <Grid
-                                    key={`token-${header.key}`}
-                                    item
-                                    xs
-                                    className="remaining-fields__cell"
-                                >
-                                    <ScatterWrapper
-                                        spec={"scatter"}
-                                        sip={simulationTrials}
-                                        tokenName={token.name}
-                                    />
-                                </Grid>
-                            );
-                        }
+                {headers.map((header, index) => {
+                    if (header.editable) {
                         return (
                             <Grid
                                 key={`token-${header.key}`}
                                 item
-                                xs
-                                className="remaining-fields__cell"
+                                xs={1}
+                                className="remaining-fields"
                             >
-                                {token[header.key]}
+                                <FormControl className="token-row__form-control">
+                                    <OutlinedInput
+                                        value={token[header.key]}
+                                        onChange={(e) => {
+                                            handleInputOnChange(
+                                                Number(e.target.value)
+                                            );
+                                        }}
+                                        classes={{
+                                            root: "token-row__textfield",
+                                            input: "token-row__input",
+                                            focused: "token-row__focused",
+                                        }}
+                                        inputProps={{
+                                            min: 0,
+                                            type: "number",
+                                        }}
+                                    />
+                                </FormControl>
                             </Grid>
                         );
-                    })}
-                </Grid>
+                    } else if (header.isChanceOf) {
+                        return (
+                            <Grid
+                                key={`token-${header.key}`}
+                                item
+                                xs={1}
+                                className="remaining-fields"
+                            >
+                                <Liquidation
+                                    token={token}
+                                    threshold={token.threshold}
+                                    sip={simulationTrials}
+                                />
+                                %
+                            </Grid>
+                        );
+                    } else if (header.isChart) {
+                        return (
+                            <Grid
+                                key={`token-${header.key}`}
+                                item
+                                xs={3}
+                                className="remaining-fields"
+                            >
+                                <ChartWrapper
+                                    token={token}
+                                    threshold={token.threshold}
+                                    sip={simulatedPrice}
+                                />
+                            </Grid>
+                        );
+                    } else if (header.isScatter) {
+                        return (
+                            <Grid
+                                key={`token-${header.key}`}
+                                item
+                                xs={3}
+                                className="remaining-fields"
+                            >
+                                <ScatterWrapper
+                                    spec={"scatter"}
+                                    sip={simulationTrials}
+                                    tokenName={token.name}
+                                />
+                            </Grid>
+                        );
+                    }
+                    return (
+                        <Grid
+                            key={`token-${header.key}`}
+                            item
+                            xs={1}
+                            className="remaining-fields"
+                        >
+                            {token[header.key]}
+                        </Grid>
+                    );
+                })}
                 {/*         <Grid item xs={2}>
                     <span className="remaining-fields">
                         {
@@ -373,7 +387,8 @@ const TokenRow = ({
                         }
                     </span>
                 </Grid>
-            */}   {/*   <Grid item xs={5}>
+            */}{" "}
+                {/*   <Grid item xs={5}>
                     <span className="remaining-fields">
                         {
                             // TODO which class? fluid issue on mobile?
@@ -393,7 +408,8 @@ const TokenRow = ({
                         }
                     </span>
                 </Grid>
-               */}  {/*  <Grid item xs={4}>
+               */}{" "}
+                {/*  <Grid item xs={4}>
                     <span className="remaining-fields">
                         {
                             // TODO which class? fluid issue on mobile?
