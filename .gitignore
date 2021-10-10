@@ -5,7 +5,6 @@
 
 
 ### User defined ###
-.env
 .OOFenv
 /node_modules
 /data-prep/result
@@ -57,6 +56,7 @@ htmlcov/
 .coverage
 .coverage.*
 .cache
+.parcel-cache
 nosetests.xml
 coverage.xml
 *.cover
@@ -290,6 +290,7 @@ blockchain/history
 
 #truffle
 yarn.lock
+client/yarn.lock
 package-lock.json
 
 ### VisualStudioCode ###

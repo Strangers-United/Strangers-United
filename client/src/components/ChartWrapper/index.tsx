@@ -17,11 +17,13 @@ const ChartWrapper = (props: IChartWrapper) => {
     }, [props.threshold, sipList, props.token]);
     //console.log("==== ChartWrapper render", props.sip, props.token, props.threshold);
 
-    return <HistogramLive
-        sip={props.sip}
-        currentPrice={props.token.currentPrice}
-        spec={"bar"} // bar or bar mean
-    />;
+    return (
+        <HistogramLive
+            sip={props.sip}
+            currentPrice={props.token.currentPrice}
+            spec={"bar"} // bar or bar mean
+        />
+    );
 };
 
 export default ChartWrapper;

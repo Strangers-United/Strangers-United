@@ -4,7 +4,7 @@ require("dotenv").config({ path: __dirname + "/../.env" });
 const { API_URL, MNEMONIC } = process.env;
 
 module.exports = {
-    contracts_build_directory: path.join(__dirname, "client/src/abis"),
+    contracts_build_directory: path.join(__dirname, "build/artifacts"),
     contracts_directory: path.join(__dirname, "contracts"),
     networks: {
         development: {

@@ -58,10 +58,19 @@ const initialState = {
         { key: "usdValue", label: "Value (USD)", editable: false },
         { key: "currentPrice", label: "Price", editable: false },
         { key: "threshold", label: "Liquidation Threshold", editable: true },
-        { key: "chance", label: "Chance of Hitting", editable: false, isChanceOf: true },
+        {
+            key: "chance",
+            label: "Chance of Hitting",
+            editable: false,
+            isChanceOf: true,
+        },
         { key: "chart", label: "Chart", editable: false, isChart: true },
-        { key: "scatter", label: "Relation to ETH", editable: false, isScatter: true },
-
+        {
+            key: "scatter",
+            label: "Relation to ETH",
+            editable: false,
+            isScatter: true,
+        },
     ],
     state: "fetching" as FETCH_STATE,
     tokenList: (process.env.REACT_APP_ENV === "production"
@@ -98,14 +107,14 @@ export const fetchTokenBalance = createAsyncThunk(
             const result =
                 process.env.REACT_APP_ENV === "production"
                     ? list.map((e, index) =>
-                        ((index + 1) * 100000000000000000).toString()
-                    )
+                          ((index + 1) * 100000000000000000).toString()
+                      )
                     : await TokenBalanceCheckerContract.methods
-                        .balance(
-                            accountAddress,
-                            list.map((e) => e.address)
-                        )
-                        .call();
+                          .balance(
+                              accountAddress,
+                              list.map((e) => e.address)
+                          )
+                          .call();
 
             return await Promise.all(
                 list.map(async (t: IToken, index) => {
