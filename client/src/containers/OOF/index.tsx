@@ -15,6 +15,8 @@ import { useWeb3React } from "@web3-react/core";
 import OOFAbi from "../../abis/oof";
 import Web3 from "web3";
 import { red } from "@mui/material/colors";
+import { AbiItem } from "web3-utils";
+import { web3Instance } from "../../utils/web3Context";
 
 const OOF = () => {
     const [text, setText] = useState("");
@@ -27,8 +29,8 @@ const OOF = () => {
         8, 9,
     ]);
     const [resultTitle, setResultTitle] = useState<string>("");
-    const [web3Instance, setWeb3Instance] = useState<unknown>();
-    const [oofContract, setOofContract] = useState<unknown>();
+    // const [web3Instance, setWeb3Instance] = useState<unknown>();
+    const [oofContract, setOofContract] = useState<any>();
     const [url, setUrl] = useState(
         "https://eth-rinkeby.alchemyapi.io/v2/-ARIrcFm5LteDd01Aevrp5MOu64F1LC5"
     );
@@ -49,22 +51,22 @@ const OOF = () => {
 
     useEffect(() => {
         // const { account } = useWeb3React();
-        const web3 = new Web3(Web3.givenProvider);
-        let account = "";
-        web3.eth.getAccounts().then((e) => {
-            account = e[0];
-        });
-        setAccount(account);
-        setWeb3Instance(web3);
+        // const web3 = new Web3(Web3.givenProvider);
+        // let account = "";
+        // web3.eth.getAccounts().then((e) => {
+        //     account = e[0];
+        // });
+        // setAccount(account);
+        // setWeb3Instance(web3);
         let oofContractAddress: string = "";
         if (process.env.REACT_APP_ENV === "production")
-            oofContractAddress =
-                process.env.REACT_APP_OOF_PRODUCTION_CONTRACT_ADDRESS;
+            oofContractAddress = process.env
+                .REACT_APP_OOF_PRODUCTION_CONTRACT_ADDRESS as string;
         else
-            oofContractAddress =
-                process.env.REACT_APP_OOF_LOCAL_CONTRACT_ADDRESS;
-        const openOracleFramework = new web3.eth.Contract(
-            OOFAbi,
+            oofContractAddress = process.env
+                .REACT_APP_OOF_LOCAL_CONTRACT_ADDRESS as string;
+        const openOracleFramework = new web3Instance.eth.Contract(
+            OOFAbi as AbiItem[],
             oofContractAddress
         );
         setOofContract(openOracleFramework);
@@ -75,15 +77,20 @@ const OOF = () => {
         return Math.ceil(num * precision) / precision;
     };
 
-    const changeSelectedField = (e) => {
+    const changeSelectedField = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedField(e.target.value);
     };
 
-    const changeSelectedHistoryFields = (e) => {
+    const changeSelectedHistoryFields = (
+        e: React.ChangeEvent<HTMLInputElement>
+    ) => {
         let array: any = e.target.value;
         try {
-            array = array.split(",").map((el) => parseInt(el)).filter(el => !!el);
-            for (let i = 0; i < length(array); i++) {
+            array = array
+                .split(",")
+                .map((el: any) => parseInt(el))
+                .filter((el: any) => !!el);
+            for (let i = 0; i < array.length; i++) {
                 if (!(array[i] >= 0 && array[i] <= 9)) {
                     return;
                 }
@@ -93,10 +100,15 @@ const OOF = () => {
             return;
         }
     };
-    const changeHistoryTimestamps = (e) => {
+    const changeHistoryTimestamps = (
+        e: React.ChangeEvent<HTMLInputElement>
+    ) => {
         let array: any = e.target.value;
         try {
-            array = array.split(",").map((el) => parseInt(el)).filter(el => !!el);
+            array = array
+                .split(",")
+                .map((el: any) => parseInt(el))
+                .filter((el: any) => !!el);
             setHistoryTimestamps(array);
         } catch (e) {
             return;
@@ -114,7 +126,7 @@ const OOF = () => {
             );
             setData(
                 `Received data for field ${selectedField} is :\n\tValue: ${roundUp(
-                    web3Instance.utils.fromWei(result["0"]),
+                    parseFloat(web3Instance.utils.fromWei(result["0"])),
                     2
                 )}\n\tTimestamp: ${result["1"]}\n\tDecimal: ${result["2"]}`
             );
@@ -134,7 +146,9 @@ const OOF = () => {
         );
         setHistoryData(
             `Historical data received for files ${selectedHistoryFields} is :\n\tValue:\n${result.map(
-                (res) => "\t" + roundUp(web3Instance.utils.fromWei(res), 2)
+                (res: string) =>
+                    "\t" +
+                    roundUp(parseFloat(web3Instance.utils.fromWei(res)), 2)
             )}`
         );
     };
@@ -145,7 +159,7 @@ const OOF = () => {
         padding: "9px",
         boxSizing: "border-box",
         fontSize: "15px",
-    };
+    } as any;
 
     return (
         <Container>
@@ -156,8 +170,8 @@ const OOF = () => {
             </h3>
             <hr
                 style={{
-                    color: red,
-                    backgroundColor: red,
+                    color: "red",
+                    backgroundColor: "red",
                     height: 5,
                 }}
             />
@@ -173,7 +187,9 @@ const OOF = () => {
                     <InputGroup className="mb-3">
                         <FormControl
                             value={selectedField}
-                            onChange={(e) => changeSelectedField(e)}
+                            onChange={(
+                                e: React.ChangeEvent<HTMLInputElement>
+                            ) => changeSelectedField(e)}
                             pattern="[0-9]*"
                             placeholder="Value to Store"
                             aria-label="Value to Store"
@@ -195,7 +211,7 @@ const OOF = () => {
                     <Form.Control
                         style={style}
                         as="textarea"
-                        rows="3"
+                        rows={3}
                         name="address"
                         value={data}
                         onChange={(e) => setData(e.target.value)}
@@ -204,8 +220,8 @@ const OOF = () => {
             </span>
             <hr
                 style={{
-                    color: red,
-                    backgroundColor: red,
+                    color: "red",
+                    backgroundColor: "red",
                     height: 5,
                 }}
             />
@@ -220,8 +236,10 @@ const OOF = () => {
                     </Form.Label>
                     <InputGroup className="mb-3">
                         <FormControl
-                            value={selectedHistoryFields}
-                            onChange={(e) => changeSelectedHistoryFields(e)}
+                            value={selectedHistoryFields.toString()}
+                            onChange={(
+                                e: React.ChangeEvent<HTMLInputElement>
+                            ) => changeSelectedHistoryFields(e)}
                             placeholder="Value to Store"
                             aria-label="Value to Store"
                             aria-describedby="basic-addon2"
@@ -242,10 +260,12 @@ const OOF = () => {
                     <Form.Control
                         style={style}
                         as="textarea"
-                        rows="3"
+                        rows={3}
                         name="address"
-                        value={historyTimestamps}
-                        onChange={(e) => changeHistoryTimestamps(e)}
+                        value={historyTimestamps.toString()}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            changeHistoryTimestamps(e)
+                        }
                     />
                 </Form.Group>
             </span>
@@ -255,10 +275,12 @@ const OOF = () => {
                     <Form.Control
                         style={style}
                         as="textarea"
-                        rows="3"
+                        rows={3}
                         name="address"
                         value={historyData}
-                        onChange={(e) => setHistoryData(e.target.value)}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            setHistoryData(e.target.value)
+                        }
                     />
                 </Form.Group>
             </span>
